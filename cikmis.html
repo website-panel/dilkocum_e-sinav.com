@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elektronik Sınav Uygulaması</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #aaa; }
+        .question-text mark { background-color: #fff59d; border-radius: 3px; padding: 0 2px; cursor: pointer; }
+    </style>
+</head>
+<body class="bg-slate-100">
+
+    <div id="app-container">
+        <!-- SINAV ARAYÜZÜ -->
+        <div id="sinav-arayuzu" class="flex flex-col min-h-screen">
+            <header class="bg-slate-800 text-white shadow-md sticky top-0 z-40">
+                <div class="container mx-auto px-4 py-3 text-center">
+                    <h1 class="text-xl font-bold">Elektronik Sınav Uygulaması</h1>
+                </div>
+            </header>
+            <div class="bg-white border-b border-slate-200 sticky top-[61px] z-40">
+                <div class="container mx-auto px-4 py-2 flex flex-wrap justify-between items-center gap-4">
+                     <div class="user-info flex items-center gap-3">
+                        <svg class="w-10 h-10 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C16.43 19.18 14.03 20 12 20z"/></svg>
+                        <div class="user-details"><strong class="kullanici-ad-soyad font-semibold text-slate-700">Yükleniyor...</strong></div>
+                    </div>
+                    <div class="time-info flex items-center gap-2">
+                        <span class="time-label text-slate-500">Kalan Süre:</span>
+                        <span id="main-exam-timer" class="time-box font-mono text-2xl font-bold text-red-600">--:--:--</span>
+                    </div>
+                    <div class="status-controls flex gap-2">
+                         <button id="sinav-pdf-indir-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center gap-2 transform hover:scale-105">📄 Soruları İndir</button>
+                         <button id="sinav-sonlandir-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center gap-2 transform hover:scale-105">🛑 Sınavı Sonlandır</button>
+                         <button id="sonuclara-don-btn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 items-center gap-2 hidden transform hover:scale-105">📊 Sonuçlara Dön</button>
+                    </div>
+                </div>
+            </div>
+
+            <main class="container mx-auto px-4 py-8 flex-grow max-w-7xl">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <div class="lg:col-span-2 bg-white p-6 sm:p-8 rounded-2xl shadow-lg flex flex-col">
+                        <div id="soru-icerik" class="flex-grow">
+                            <!-- Soru içeriği buraya dinamik olarak gelecek -->
+                        </div>
+                        <div class="flex justify-between mt-8 pt-6 border-t border-slate-200">
+                            <button id="prev-btn" class="nav-button bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-6 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed no-select transform hover:scale-105 disabled:scale-100">← Önceki</button>
+                            <button id="next-btn" class="nav-button bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed no-select transform hover:scale-105 disabled:scale-100">Sonraki →</button>
+                        </div>
+                    </div>
+
+                    <aside class="bg-white p-6 rounded-2xl shadow-lg lg:sticky lg:top-40">
+                        <h3 class="text-xl font-bold text-center mb-4 pb-2 border-b-2 border-slate-200">Optik Form</h3>
+                        <div id="optik-form-icerik" class="space-y-2 max-h-[calc(100vh-250px)] overflow-y-auto custom-scrollbar pr-2">
+                            <!-- Optik form içeriği buraya dinamik olarak gelecek -->
+                        </div>
+                    </aside>
+                </div>
+            </main>
+        </div>
+
+        <!-- SONUÇ ARAYÜZÜ -->
+        <div id="sonuc-arayuzu" class="hidden">
+             <header class="bg-slate-800 text-white shadow-md">
+                <div class="container mx-auto px-4 py-3 text-center">
+                    <h1 class="text-xl font-bold">Sınav Sonuç Raporu: <span id="sonuc-kullanici-ad-soyad"></span></h1>
+                </div>
+            </header>
+             <div class="container mx-auto px-4 py-8 max-w-4xl">
+                <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg mb-6 border-l-8 border-sky-500">
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12">
+                        <div class="text-center">
+                            <p class="text-lg text-slate-500">Net Puanınız</p>
+                            <p id="net-sayisi-buyuk" class="text-7xl font-bold text-slate-800">0.00</p>
+                        </div>
+                        <div class="w-full flex-1 max-w-xs space-y-3">
+                            <div class="flex justify-between items-baseline text-lg">
+                                <span class="font-semibold text-green-600">DOĞRU</span>
+                                <span id="dogru-sayisi" class="text-2xl font-bold text-green-600">0</span>
+                            </div>
+                             <div class="flex justify-between items-baseline text-lg">
+                                <span class="font-semibold text-red-600">YANLIŞ</span>
+                                <span id="yanlis-sayisi" class="text-2xl font-bold text-red-600">0</span>
+                            </div>
+                             <div class="flex justify-between items-baseline text-lg">
+                                <span class="font-semibold text-slate-500">BOŞ</span>
+                                <span id="bos-sayisi" class="text-2xl font-bold text-slate-500">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="bg-white p-6 rounded-2xl shadow-lg mb-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <button id="yeni-sinav-btn" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">🚀 Yeni Sınava Başla</button>
+                        <button id="sorulari-incele-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">🔍 Soruları İncele</button>
+                        <button id="sonuc-pdf-indir-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">📄 Kitapçığı İndir</button>
+                        <button id="gecmis-sayfasina-git-btn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">📜 Tüm Geçmişim</button>
+                    </div>
+                 </div>
+                 <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4 pb-2 border-b-2 border-slate-200">Cevap Anahtarı ve Detaylar</h3>
+                    <div id="optik-form-sonuc" class="space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
+                        <!-- Sonuç optik formu buraya gelecek -->
+                    </div>
+                 </div>
+             </div>
+        </div>
+
+        <!-- MODAL PENCERELER -->
+        <div id="onay-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center transform transition-all scale-95 opacity-0">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800">Emin misiniz?</h2>
+                <p id="onay-mesaji" class="text-slate-600 mb-6"></p>
+                <div class="flex gap-4">
+                    <button id="onay-iptal-btn" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 rounded-lg transition">İptal</button>
+                    <button id="onay-devam-btn" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition">Evet, Onayla</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="bilgi-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+             <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center transform transition-all scale-95 opacity-0">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800">Bilgi</h2>
+                <p id="bilgi-mesaji" class="text-slate-600 mb-6"></p>
+                <button id="bilgi-kapat-btn" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-lg transition">Tamam</button>
+            </div>
+        </div>
+
+        <div id="sayac-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center transform transition-all scale-95 opacity-0">
+                <h2 class="text-2xl font-bold mb-2 text-slate-800">Sonuçlar Hazırlanıyor...</h2>
+                <p class="text-slate-600 mb-4">Lütfen bekleyin, sonuçlarınız saniyeler içinde görüntülenecek.</p>
+                <div id="gerisayim-sayaci" class="text-7xl font-bold text-sky-500">10</div>
+            </div>
+        </div>
+
+        <div id="soru-detay-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+             <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl flex flex-col max-h-[90vh] transform transition-all scale-95 opacity-0">
+                <div class="p-6 border-b border-slate-200">
+                    <h3 id="soru-detay-baslik" class="text-xl font-bold text-slate-800"></h3>
+                </div>
+                <div class="p-6 flex-grow overflow-y-auto custom-scrollbar">
+                    <div id="soru-detay-metin" class="bg-slate-100 p-4 rounded-lg mb-6 text-lg"></div>
+                    <ul id="soru-detay-secenekler" class="space-y-3"></ul>
+                </div>
+                <div class="p-4 bg-slate-50 border-t border-slate-200 text-right rounded-b-2xl">
+                    <button id="soru-detay-kapat-btn" class="bg-slate-600 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-lg transition">Kapat</button>
+                </div>
+             </div>
+        </div>
+
+    </div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, collection, doc, getDoc, setDoc, addDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyAvaEaHtTwcuCDBIggJGd4w_nzJQM5UlmY", authDomain: "teacher-adminpanel.firebaseapp.com", projectId: "teacher-adminpanel", storageBucket: "teacher-adminpanel.appspot.com", messagingSenderId: "901735644134", appId: "1:901735644134:web:a6aa575a0754de1333f427", measurementId: "G-68BWZJYCK9" };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+ 
+        // --- SORU HAVUZU ---
+const SORU_HAVUZU = [ 
+{
+        "metin": "At the start of the 20th century, nine out of ten people lived in rural areas where they worked on the land, ---- approximately half of the world’s population today lives in the city.",
+        "secenekler": [
+            "as",
+            "whereas",
+            "hence",
+            "so",
+            "whether"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Today, ---- language is completely isolated from ---- languages, which means there is a constant contact among all languages.",
+        "secenekler": [
+            "any / a few",
+            "no / other",
+            "a / several",
+            "all / many",
+            "each / any"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "---- Nigeria is potentially the richest nation in Africa, with huge reserves of oil and natural gas, the money earned from these natural resources has not been used properly, and most Nigerians remain very poor.",
+        "secenekler": [
+            "Because",
+            "Although",
+            "Until",
+            "Now that",
+            "Only if"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "---- Naples, a lively southern Italian city, is famous for its delicious tomatoes and outstanding mozzarella cheese, it is not surprising that it is also the undisputed 'home of the pizza'.",
+        "secenekler": [
+            "Even if",
+            "Given that",
+            "Only when",
+            "By the time",
+            "Whereas"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Children learn the language ---- to them and reinforce the unique features that are characteristic of the dialect ----.",
+        "secenekler": [
+            "speaking / being used",
+            "to be spoken / to use",
+            "spoken / used",
+            "being spoken / using",
+            "to speak / to be used"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "---- improved roads, safer cars and harsher penalties for driving under the influence of alcohol, the use of seatbelts and airbags has brought down the number of motor vehicle accidents.",
+        "secenekler": [
+            "In spite of",
+            "In addition to",
+            "For the sake of",
+            "In case of",
+            "As opposed to"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "The town of Ushuaia lies at the southern tip of Argentina, ---- close to the Antarctic ---- it is bitterly cold for much of the year.",
+        "secenekler": [
+            "such / that",
+            "as / as",
+            "the more / the more",
+            "either / or",
+            "so / that"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "Computers may be able to beat us in specific activities; ----, it will be a long time before we see a robot with human-like versatility.",
+        "secenekler": [
+            "moreover",
+            "thus",
+            "likewise",
+            "instead",
+            "however"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "There ---- so much traffic in the air at any one time in many parts of the world that precautions ---- to prevent probable collisions.",
+        "secenekler": [
+            "had been / can be taken",
+            "has been / could have been taken",
+            "was / would have been taken",
+            "is / must be taken",
+            "will be / used to be taken"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Not ---- speaker can create great literature, but ---- who knows a language can create and understand new sentences.",
+        "secenekler": [
+            "one / everybody",
+            "every / anybody",
+            "each / nobody",
+            "another / someone",
+            "any / no one"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "---- Byzantium had fallen, the Ottomans completed their conquest of the Balkans with ease.",
+        "secenekler": [
+            "Unless",
+            "Whether",
+            "If",
+            "Once",
+            "In case"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Given that it is highly likely that further reservoirs exist, the interior of our planet could contain at least six times ---- much water ---- all the world’s oceans do.",
+        "secenekler": [
+            "as / as",
+            "so / that",
+            "whether / or",
+            "both / and",
+            "either / or"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "Leaders from Athens, Mexico City, Paris and Madrid have recently announced that diesel vehicles will be banned in their cities from 2025 ---- pollution concerns.",
+        "secenekler": [
+            "in spite of",
+            "except for",
+            "due to",
+            "along with",
+            "by means of"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "All living things on Earth need water ---- it is possible that there could be life elsewhere that uses different mechanisms and chemistry.",
+        "secenekler": [
+            "so",
+            "but",
+            "as",
+            "as though",
+            "if"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Human hearing is not ---- sensitive ---- that of a bat or a dog, but human beings make a wide range of sounds.",
+        "secenekler": [
+            "both / and",
+            "neither / nor",
+            "as / as",
+            "whether / or",
+            "either / or"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "The rapid disappearance of Arctic ice ---- the use of an undersea Internet cable, ---- a shorter path between Europe and Asia.",
+        "secenekler": [
+            "can enable / to be created",
+            "must enable / being created",
+            "would enable / to have created",
+            "may enable / creating",
+            "should enable / to be creating"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Implantation of the embryo is a milestone in human development as it is from this stage onwards that the embryo ---- to take shape and the overall body plan ----.",
+        "secenekler": [
+            "began / had been decided",
+            "begins / is decided",
+            "had begun / will be decided",
+            "will begin / was decided",
+            "is beginning / has been decided"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "---- aeroplanes have made it easier for us to explore the world, nearly one in three of us claim to be anxious or fearful of flying.",
+        "secenekler": [
+            "Only if",
+            "Whenever",
+            "As soon as",
+            "Although",
+            "Because"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "---- the number of people affected, floods undoubtedly constitute the greatest of all natural hazards.",
+        "secenekler": [
+            "In spite of",
+            "In terms of",
+            "As opposed to",
+            "By means of",
+            "Instead of"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "The moment the first stars ---- is one of the most evocative milestones in the evolution of the cosmos – it marks the beginning of the age of light, the moment when the Universe ---- recognisable to us.",
+        "secenekler": [
+            "were born / would have become",
+            "are being born / might become",
+            "had been born / will become",
+            "are born / should become",
+            "would have been born / could have become"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "The Great Barrier Reef is one of the longest reefs in the world, ---- more than 2000 kilometres along the northeastern coast of Australia.",
+        "secenekler": [
+            "to have extended",
+            "to extend",
+            "having been extended",
+            "extending",
+            "having extended"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "---- the wheel was invented, humans had devised various ways to move heavy objects around.",
+        "secenekler": [
+            "As long as",
+            "Before",
+            "Whenever",
+            "In case",
+            "Unless"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "When ---- the bedroom, people are advised to choose colours like aqua green, baby blue, and light pink, which ---- to have a calming effect.",
+        "secenekler": [
+            "to paint / had been reported",
+            "painted / are reported",
+            "having painted / were reported",
+            "painting / have been reported",
+            "being painted / would be reported"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "The era of foragers was the time in human history when ---- human communities lived by searching out or hunting for food and ---- things they needed, rather than growing or manufacturing them.",
+        "secenekler": [
+            "no / some",
+            "both / any",
+            "most / much",
+            "all / other",
+            "many / a little"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Powdered milk can be obtained ---- by spraying a fine mist of milk into a heated chamber ---- by adding the milk in a thin layer to a heated surface, from which the dried milk solids can be removed.",
+        "secenekler": [
+            "the more / the more",
+            "so / that",
+            "either / or",
+            "just / as",
+            "such / that"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "Bird nests differ from ---- species to the next, and ---- nest has its own style of architecture, including location, materials, and shape.",
+        "secenekler": [
+            "other / any",
+            "one / each",
+            "some / another",
+            "all / whole",
+            "every / neither"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Brain death happens when the brain shows no signs of any activity, ---- machines are keeping the heart and lungs working.",
+        "secenekler": [
+            "even if",
+            "in case",
+            "because",
+            "until",
+            "after"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "Disease or injury ---- nerves from sending appropriate signals or force them ---- inappropriate ones.",
+        "secenekler": [
+            "should prevent / being sent",
+            "might prevent / to have sent",
+            "could prevent / sending",
+            "must prevent / having sent",
+            "may prevent / to send"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "Scientists ---- at Stanford University School of Medicine in the US have invented an implant that could help the blind ----.",
+        "secenekler": [
+            "worked / having seen",
+            "having worked / to have seen",
+            "to work / seeing",
+            "to have worked / see",
+            "working / to see"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "The panda has become an international symbol for conservation since 1990, winning the public’s affection ---- their distinctive black and white markings and clumsy behaviour.",
+        "secenekler": [
+            "in spite of",
+            "on behalf of",
+            "thanks to",
+            "in contrast to",
+            "except for"
+        ],
+        "dogruCevap": "C"
+    }
+ ];
+        
+        const ui = { 
+            sinavArayuzu: document.getElementById('sinav-arayuzu'), 
+            sonucArayuzu: document.getElementById('sonuc-arayuzu'), 
+            soruIcerik: document.getElementById('soru-icerik'), 
+            optikFormIcerik: document.getElementById('optik-form-icerik'), 
+            sinavPdfIndirBtn: document.getElementById('sinav-pdf-indir-btn'),
+            onayPopup: document.getElementById('onay-popup'),
+            bilgiPopup: document.getElementById('bilgi-popup'),
+            sayacPopup: document.getElementById('sayac-popup'),
+            soruDetayPopup: document.getElementById('soru-detay-popup')
+        };
+
+        const SINAVDAKI_SORU_SAYISI = SORU_HAVUZU.length; 
+        const SORU_BASINA_DAKIKA = 1.5;
+        const SINAV_SURESI_DAKIKA = Math.ceil(SINAVDAKI_SORU_SAYISI * SORU_BASINA_DAKIKA);
+        let state = {};
+        let unsubscribeOnSnapshot = null;
+
+        function resetState() { 
+            state = { 
+                currentUser: state.currentUser,
+                mevcutSoruIndex: 0, 
+                sorular: [], 
+                ogrenciCevaplari: {}, 
+                ustuCiziliSecenekler: {}, 
+                sinavAktif: false, 
+                isReviewMode: false, 
+                mainTimerInterval: null, 
+                sonSonuc: null 
+            }; 
+        }
+        
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userData = await kullaniciVerisiCek(user.uid);
+                state.currentUser = { ...user, ...userData };
+                
+                kullaniciBilgileriniYukle();
+                olayDinleyicileriEkle();
+                canliOturumDinleyicisiEkle();
+
+                const reviewDataString = sessionStorage.getItem('reviewData');
+                if (reviewDataString) {
+                    const reviewData = JSON.parse(reviewDataString);
+                    sinaviIncelemeModundaBaslat(reviewData);
+                    sessionStorage.removeItem('reviewData');
+                } else {
+                    if (sessionStorage.getItem('sinavAktif')) {
+                        sessionStorage.removeItem('sinavAktif');
+                        document.body.innerHTML = `<div class="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+                            <h1 class="text-2xl font-bold text-red-600">Sınav esnasında sayfa yenilemek kural dışıdır. Oturumunuz sonlandırıldı.</h1>
+                            <a href='./index.html' class="mt-4 bg-sky-500 text-white font-bold py-2 px-4 rounded-lg">Ana Sayfaya Dön</a>
+                        </div>`;
+                        return;
+                    }
+                    sinaviBaslat();
+                }
+            } else {
+                window.location.href = './index.html';
+            }
+        });
+
+        async function kullaniciVerisiCek(uid) {
+            const userDocRef = doc(db, "kullanicilar", uid);
+            try {
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    return docSnap.data();
+                } else {
+                    console.warn("Kullanıcı veri dokümanı bulunamadı.");
+                    return { isim: null, soyisim: null };
+                }
+            } catch (error) {
+                console.error("Kullanıcı verisi çekilirken hata:", error);
+                return { isim: null, soyisim: null };
+            }
+        }
+
+        function kullaniciBilgileriniYukle() {
+            if(state.currentUser) {
+                const { isim, soyisim, email } = state.currentUser;
+                const gorunecekIsim = (isim && soyisim) ? `${isim} ${soyisim}` : (email);
+                document.querySelector('.kullanici-ad-soyad').textContent = gorunecekIsim;
+            }
+        }
+
+        function olayDinleyicileriEkle() {
+            document.getElementById('sinav-sonlandir-btn').addEventListener('click', () => { showOnayPopup('Sınavı sonlandırmak istediğinize emin misiniz? Cevaplarınız kaydedilecek.', () => sinaviSonlandir(true), 'Evet, Sonlandır'); });
+            document.getElementById('prev-btn').addEventListener('click', oncekiSoru);
+            document.getElementById('next-btn').addEventListener('click', sonrakiSoru);
+            document.getElementById('sorulari-incele-btn').addEventListener('click', () => { if (state.sonSonuc) { sessionStorage.setItem('reviewData', JSON.stringify(state.sonSonuc)); window.location.reload(); } });
+            document.getElementById('gecmis-sayfasina-git-btn').addEventListener('click', () => { window.location.href = './gecmis-sinavlar.html'; });
+            document.getElementById('yeni-sinav-btn').addEventListener('click', () => { window.location.href = './index.html'; });
+            
+            ui.soruIcerik.addEventListener('click', (event) => {
+                if (state.isReviewMode) return;
+                const listItem = event.target.closest('li[data-option]');
+                if (listItem) {
+                    const soruId = state.sorular[state.mevcutSoruIndex].id;
+                    const secenek = listItem.dataset.option;
+                    selectAnswer(soruId, secenek);
+                }
+            });
+
+            document.getElementById('optik-form-icerik').addEventListener('change', (event) => {
+                 if (event.target.type === 'radio' && !state.isReviewMode) {
+                    const soruId = parseInt(event.target.dataset.soruId);
+                    const secenek = event.target.value;
+                    selectAnswer(soruId, secenek);
+                 }
+            });
+
+            ui.soruIcerik.addEventListener('contextmenu', handleStrikethrough);
+            document.getElementById('optik-form-sonuc').addEventListener('click', (event) => { const satir = event.target.closest('[data-soru-id]'); if (satir && satir.dataset.soruId) { showSoruDetayPopup(parseInt(satir.dataset.soruId)); } });
+            document.getElementById('sonuclara-don-btn').addEventListener('click', () => { if (state.sonSonuc) { showSonucSayfasi(state.sonSonuc); } });
+            
+            ui.soruIcerik.addEventListener('mouseup', (event) => {
+                if (!event.target.closest('.question-text')) return;
+                const selection = window.getSelection();
+                if (selection.isCollapsed || selection.rangeCount === 0) return;
+                const range = selection.getRangeAt(0);
+                if (range.commonAncestorContainer.parentNode.closest('.question-text')) {
+                    const mark = document.createElement('mark');
+                    try { range.surroundContents(mark); } 
+                    catch (e) { console.warn("Seçim tam olarak sarılamadı.", e); }
+                }
+                selection.removeAllRanges();
+            });
+
+            ui.soruIcerik.addEventListener('click', (event) => {
+                if (event.target.tagName === 'MARK' && event.target.closest('.question-text')) {
+                    const markElement = event.target;
+                    const parent = markElement.parentNode;
+                    markElement.replaceWith(document.createTextNode(markElement.textContent));
+                    parent.normalize();
+                }
+            });
+
+            ui.sinavPdfIndirBtn.addEventListener('click', () => sorulariPDFIndir(false));
+            document.getElementById('sonuc-pdf-indir-btn').addEventListener('click', () => sorulariPDFIndir(true));
+            
+            document.getElementById('onay-iptal-btn').addEventListener('click', () => hideModal(ui.onayPopup));
+            document.getElementById('bilgi-kapat-btn').addEventListener('click', () => hideModal(ui.bilgiPopup));
+            document.getElementById('soru-detay-kapat-btn').addEventListener('click', () => hideModal(ui.soruDetayPopup));
+
+        }
+        
+        async function canliOturumDinleyicisiEkle() {
+            window.addEventListener('beforeunload', async () => {
+                if (state.sinavAktif && state.currentUser) {
+                    const sessionRef = doc(db, 'aktifOturumlar', state.currentUser.uid);
+                    await deleteDoc(sessionRef);
+                }
+            });
+        }
+        
+        async function sinaviSonlandir(kullaniciIstegi) {
+            state.sinavAktif = false;
+            if (unsubscribeOnSnapshot) unsubscribeOnSnapshot();
+
+            if (state.currentUser) {
+                const sessionRef = doc(db, 'aktifOturumlar', state.currentUser.uid);
+                await deleteDoc(sessionRef).catch(err => console.error("Canlı oturum silinemedi:", err));
+            }
+
+            sessionStorage.removeItem('sinavAktif');
+            clearInterval(state.mainTimerInterval);
+            document.querySelectorAll('#sinav-arayuzu button, #sinav-arayuzu input').forEach(el => el.disabled = true);
+            
+            const sonuc = sonuclariHesapla();
+            state.sonSonuc = sonuc.local;
+            
+            await sonucuSunucuyaGonder(sonuc.firebase);
+            sonucuLocaleKaydet(sonuc.local);
+            
+            let mesaj = kullaniciIstegi ? "Sınavınız sonlandırılmıştır.<br>Sonuçlarınız başarıyla kaydedildi." : "Süreniz dolduğu için sınavınız sonlandırılmıştır.<br>Sonuçlarınız başarıyla kaydedildi.";
+            showBilgiPopup(mesaj, () => startResultsCountdown(sonuc.local));
+        }
+        
+        async function sinaviBaslat() {
+            if (state.sinavAktif) return;
+            resetState();
+            
+            if (!sorulariYukle()) return;
+
+            ui.sonucArayuzu.classList.add('hidden');
+            ui.sinavArayuzu.classList.remove('hidden');
+            state.sinavAktif = true;
+
+            if (state.currentUser) {
+                const { isim, soyisim } = state.currentUser;
+                const sessionRef = doc(db, "aktifOturumlar", state.currentUser.uid);
+                
+                await setDoc(sessionRef, {
+                    isim: isim || 'Bilinmiyor',
+                    soyisim: soyisim || '',
+                    sinavTuru: "Çıkmış Sorular",
+                    baslamaZamani: serverTimestamp()
+                }).catch(err => console.error("Canlı oturum başlatılamadı:", err));
+
+                unsubscribeOnSnapshot = onSnapshot(sessionRef, (doc) => {
+                    if (!doc.exists() && state.sinavAktif) sinaviAdminSonlandirdi();
+                });
+            }
+
+            sessionStorage.setItem('sinavAktif', 'true');
+            optikFormuCiz();
+            soruyuEkranaCiz(state.mevcutSoruIndex);
+            startMainExamTimer();
+        }
+
+        async function sonucuSunucuyaGonder(sonuc) {
+            if (!state.currentUser) return console.error("Kullanıcı girişi yapılmadığı için sonuç kaydedilemedi.");
+            try {
+                const userExamsCollectionRef = collection(db, "kullanicilar", state.currentUser.uid, "sinavlar");
+                await addDoc(userExamsCollectionRef, sonuc);
+                console.log("Sonuç başarıyla Firebase'e kaydedildi.");
+            } catch (e) {
+                console.error("Firebase'e yazılırken hata oluştu: ", e);
+            }
+        }
+        
+        function sonucuLocaleKaydet(sonuc) {
+            if (!state.currentUser) return;
+            let sinavGecmisi = JSON.parse(localStorage.getItem(`sinavGecmisi_${state.currentUser.uid}`)) || [];
+            sinavGecmisi.push(sonuc);
+            localStorage.setItem(`sinavGecmisi_${state.currentUser.uid}`, JSON.stringify(sinavGecmisi));
+        }
+
+        function sinaviAdminSonlandirdi() {
+            if (!state.sinavAktif) return;
+            if (unsubscribeOnSnapshot) unsubscribeOnSnapshot();
+            clearInterval(state.mainTimerInterval);
+            state.sinavAktif = false;
+            document.querySelectorAll('#sinav-arayuzu button, #sinav-arayuzu input').forEach(el => el.disabled = true);
+            showBilgiPopup('Oturumunuz yönetici tarafından sonlandırılmıştır. Ana sayfaya yönlendiriliyorsunuz.', () => {
+                window.location.href = './index.html';
+            });
+        }
+
+        function soruyuEkranaCiz(index) {
+            const soru = state.sorular[index];
+            const ustucizililer = state.ustuCiziliSecenekler[soru.id] || [];
+            
+            let seceneklerHtml = soru.secenekler.map((secenek, i) => {
+                const secenekHarfi = String.fromCharCode(65 + i);
+                const isChecked = state.ogrenciCevaplari[soru.id] === secenekHarfi;
+                const isStriked = ustucizililer.includes(secenekHarfi);
+                
+                const liClasses = `flex items-start gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 transform hover:scale-[1.02] ${isChecked ? 'bg-sky-50 border-sky-500 scale-[1.02] shadow-md' : 'bg-white border-slate-200 hover:border-sky-300'}`;
+                const labelClasses = `flex items-center justify-center w-8 h-8 rounded-full border-2 flex-shrink-0 mt-1 transition ${isChecked ? 'bg-sky-500 border-sky-500 text-white' : 'bg-white border-slate-300'}`;
+                const spanClasses = `flex-grow pt-1 ${isStriked ? 'line-through text-slate-400' : 'text-slate-700'}`;
+
+                return `<li class="${liClasses}" data-option="${secenekHarfi}">
+                            <label for="secenek-${soru.id}-${secenekHarfi}" class="${labelClasses} no-select">${secenekHarfi}</label>
+                            <span class="${spanClasses}">${secenek}</span>
+                        </li>`;
+            }).join('');
+
+            ui.soruIcerik.innerHTML = `
+                <div class="mb-4">
+                    <p class="text-xl font-bold text-slate-800">Soru ${soru.id} / ${state.sorular.length}</p>
+                </div>
+                <div class="bg-sky-50 text-sky-800 p-4 rounded-lg mb-6 border-l-4 border-sky-400">
+                    ${soru.talimat || "For these questions, choose the best word or expression to fill the space."}
+                </div>
+                <div class="question-text text-xl text-slate-800 leading-relaxed mb-8">${soru.metin}</div>
+                <ul class="space-y-3">${seceneklerHtml}</ul>`;
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === state.sorular.length - 1;
+        }
+
+        function optikFormuCiz() {
+            ui.optikFormIcerik.innerHTML = state.sorular.map(soru => {
+                const seceneklerHtml = ['A', 'B', 'C', 'D', 'E'].map(secenek => {
+                    const isChecked = state.ogrenciCevaplari[soru.id] === secenek;
+                    return `<div>
+                                <input type="radio" id="optik-${soru.id}-${secenek}" name="optik-soru-${soru.id}" value="${secenek}" ${isChecked ? "checked" : ""} class="hidden peer">
+                                <label for="optik-${soru.id}-${secenek}" class="w-8 h-8 flex items-center justify-center rounded-full border border-slate-300 cursor-pointer transition peer-checked:bg-slate-800 peer-checked:text-white peer-checked:border-slate-800 hover:border-slate-500">${secenek}</label>
+                            </div>`;
+                }).join('');
+
+                return `<div class="grid grid-cols-[auto,1fr] items-center gap-3 p-2 rounded-md hover:bg-slate-50" id="optik-soru-${soru.id}">
+                            <span class="font-bold text-slate-600">${soru.id}</span>
+                            <div class="flex justify-around">${seceneklerHtml}</div>
+                        </div>`;
+            }).join('');
+        }
+        
+        function selectAnswer(soruId, secenek) {
+            if (state.isReviewMode) return;
+            
+            // Cevabı state'e kaydet
+            state.ogrenciCevaplari[soruId] = secenek;
+
+            // Sadece mevcut soru ekrandaysa soru panelini güncelle
+            if (state.sorular[state.mevcutSoruIndex].id === soruId) {
+                soruyuEkranaCiz(state.mevcutSoruIndex);
+            }
+
+            // Optik formu her zaman güncelle
+            const optikRadios = document.querySelectorAll(`input[name="optik-soru-${soruId}"]`);
+            optikRadios.forEach(radio => radio.checked = (radio.value === secenek));
+        }
+
+        function sorulariYukle() {
+            if (SORU_HAVUZU.length === 0) {
+                alert("Sınav başlatılamıyor: Soru havuzu boş!");
+                document.body.innerHTML = `<div class="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+                    <h1 class="text-2xl font-bold text-red-600">Soru havuzunda hiç soru bulunamadı.</h1>
+                    <a href='./index.html' class="mt-4 bg-sky-500 text-white font-bold py-2 px-4 rounded-lg">Ana Sayfaya Dön</a>
+                </div>`;
+                return false;
+            }
+            const secilecekSoruSayisi = Math.min(SINAVDAKI_SORU_SAYISI, SORU_HAVUZU.length);
+            const secilenSorular = [...SORU_HAVUZU].sort(() => 0.5 - Math.random()).slice(0, secilecekSoruSayisi);
+            
+            state.sorular = secilenSorular.map((soru, index) => ({ 
+                id: index + 1, 
+                talimat: soru.talimat || "For these questions, choose the best word or expression to fill the space.", 
+                ...soru 
+            }));
+            return true;
+        }
+
+        function sonuclariHesapla() {
+            let dogru = 0, yanlis = 0, bos = 0;
+            const { isim, soyisim, email } = state.currentUser;
+            const kullaniciAdi = (isim && soyisim) ? `${isim} ${soyisim}` : email;
+            
+            state.sorular.forEach(soru => {
+                const ogrenciCevabi = state.ogrenciCevaplari[soru.id];
+                if (!ogrenciCevabi) bos++;
+                else if (ogrenciCevabi === soru.dogruCevap) dogru++;
+                else yanlis++;
+            });
+
+            const net = (dogru - (yanlis / 4)).toFixed(2);
+            
+            const sonucData = {
+                isim: kullaniciAdi, 
+                sinavTuru: "Çıkmış Sorular", 
+                dogruSayisi: dogru, 
+                yanlisSayisi: yanlis, 
+                bosSayisi: bos,
+                netSayisi: net, 
+                toplamSoru: state.sorular.length, 
+                sorular: state.sorular, 
+                ogrenciCevaplari: state.ogrenciCevaplari
+            };
+            
+            return {
+                firebase: { ...sonucData, tarih: serverTimestamp() },
+                local: { ...sonucData, tarih: new Date().toLocaleString('tr-TR') }
+            };
+        }
+        
+        function handleStrikethrough(event) { 
+            if (state.isReviewMode) return; 
+            const listItem = event.target.closest('li'); 
+            if (listItem) { 
+                event.preventDefault(); 
+                const soruId = state.sorular[state.mevcutSoruIndex].id; 
+                const secenek = listItem.dataset.option; 
+                if (!state.ustuCiziliSecenekler[soruId]) state.ustuCiziliSecenekler[soruId] = []; 
+                const index = state.ustuCiziliSecenekler[soruId].indexOf(secenek); 
+                if (index > -1) state.ustuCiziliSecenekler[soruId].splice(index, 1); 
+                else state.ustuCiziliSecenekler[soruId].push(secenek); 
+                listItem.querySelector('span').classList.toggle('line-through'); 
+                listItem.querySelector('span').classList.toggle('text-slate-400'); 
+            } 
+        }
+
+        function oncekiSoru() { if (state.mevcutSoruIndex > 0) { state.mevcutSoruIndex--; soruyuEkranaCiz(state.mevcutSoruIndex); } }
+        function sonrakiSoru() { if (state.mevcutSoruIndex < state.sorular.length - 1) { state.mevcutSoruIndex++; soruyuEkranaCiz(state.mevcutSoruIndex); } }
+        function startMainExamTimer() { const timerEl = document.getElementById('main-exam-timer'); let saniye = SINAV_SURESI_DAKIKA * 60; state.mainTimerInterval = setInterval(() => { if (saniye < 0) { clearInterval(state.mainTimerInterval); sinaviSonlandir(false); return; } const saat = Math.floor(saniye / 3600); const dakika = Math.floor((saniye % 3600) / 60); const kalanSaniye = saniye % 60; timerEl.textContent = [saat, dakika, kalanSaniye].map(v => v < 10 ? '0' + v : v).join(':'); saniye--; }, 1000); }
+        
+        function showModal(modalElement) {
+            modalElement.classList.remove('hidden');
+            setTimeout(() => {
+                modalElement.querySelector('.transform').classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+
+        function hideModal(modalElement) {
+             modalElement.querySelector('.transform').classList.add('scale-95', 'opacity-0');
+             setTimeout(() => {
+                modalElement.classList.add('hidden');
+            }, 200);
+        }
+
+        function showBilgiPopup(mesaj, callback) { 
+            const popup = ui.bilgiPopup; 
+            popup.querySelector('#bilgi-mesaji').innerHTML = mesaj; 
+            showModal(popup);
+            const kapatBtn = popup.querySelector('#bilgi-kapat-btn'); 
+            const handler = () => { 
+                hideModal(popup); 
+                if(callback) callback(); 
+            }; 
+            kapatBtn.addEventListener('click', handler, {once: true}); 
+        }
+
+        function showOnayPopup(mesaj, callback, confirmText = 'Evet') { 
+            const popup = ui.onayPopup; 
+            popup.querySelector('#onay-mesaji').innerHTML = mesaj; 
+            const devamBtn = popup.querySelector('#onay-devam-btn'); 
+            devamBtn.textContent = confirmText; 
+            showModal(popup);
+            const iptalBtn = popup.querySelector('#onay-iptal-btn'); 
+            const devamListener = () => { hideModal(popup); callback(); }; 
+            const iptalListener = () => { hideModal(popup); }; 
+            devamBtn.addEventListener('click', devamListener, { once: true }); 
+            iptalBtn.addEventListener('click', iptalListener, { once: true }); 
+        }
+
+        function startResultsCountdown(sonuc) { 
+            const popup = ui.sayacPopup; 
+            showModal(popup);
+            let sayac = 5; 
+            const sayacElementi = document.getElementById('gerisayim-sayaci'); 
+            sayacElementi.textContent = sayac; 
+            const interval = setInterval(() => { 
+                sayac--; 
+                sayacElementi.textContent = sayac; 
+                if (sayac <= 0) { 
+                    clearInterval(interval); 
+                    hideModal(popup);
+                    showSonucSayfasi(sonuc); 
+                } 
+            }, 1000); 
+        }
+
+        function showSonucSayfasi(sonuc) {
+            ui.sinavArayuzu.classList.add('hidden');
+            ui.sonucArayuzu.classList.remove('hidden');
+
+            const { isim, soyisim, email } = state.currentUser;
+            const fullName = (isim && soyisim) ? `${isim.toUpperCase()} ${soyisim.toUpperCase()}` : email.toUpperCase();
+            document.getElementById('sonuc-kullanici-ad-soyad').textContent = fullName;
+            
+            document.getElementById('dogru-sayisi').textContent = sonuc.dogruSayisi;
+            document.getElementById('yanlis-sayisi').textContent = sonuc.yanlisSayisi;
+            document.getElementById('bos-sayisi').textContent = sonuc.bosSayisi;
+            document.getElementById('net-sayisi-buyuk').textContent = sonuc.netSayisi;
+            
+            sonucOptikFormuCiz(sonuc);
+        }
+
+        function sinaviIncelemeModundaBaslat(reviewData) { 
+            resetState(); 
+            state.isReviewMode = true; 
+            state.sonSonuc = reviewData; 
+            state.sorular = reviewData.sorular; 
+            state.ogrenciCevaplari = reviewData.ogrenciCevaplari; 
+            ui.sonucArayuzu.classList.add('hidden'); 
+            ui.sinavArayuzu.classList.remove('hidden'); 
+            document.getElementById('main-exam-timer').textContent = "İNCELEME"; 
+            document.getElementById('sinav-sonlandir-btn').classList.add('hidden'); 
+            document.getElementById('sonuclara-don-btn').classList.remove('hidden'); 
+            ui.sinavPdfIndirBtn.disabled = false; 
+            optikFormuCiz(); 
+            soruyuEkranaCiz(state.mevcutSoruIndex); 
+            cevaplariGoster(); 
+        }
+
+        function cevaplariGoster() { 
+            state.sorular.forEach(soru => { 
+                const ogrenciCevabi = state.ogrenciCevaplari[soru.id]; 
+                const dogruCevap = soru.dogruCevap; 
+                const dogruLabel = document.querySelector(`#optik-soru-${soru.id} label[for='optik-${soru.id}-${dogruCevap}']`); 
+                if (dogruLabel) dogruLabel.classList.add('!bg-green-500', '!border-green-500', '!text-white'); 
+                if (ogrenciCevabi && ogrenciCevabi !== dogruCevap) { 
+                    const yanlisLabel = document.querySelector(`#optik-soru-${soru.id} label[for='optik-${soru.id}-${ogrenciCevabi}']`); 
+                    if (yanlisLabel) yanlisLabel.classList.add('!bg-red-500', '!border-red-500', '!text-white'); 
+                } 
+            }); 
+        }
+
+        function sonucOptikFormuCiz(sonuc) { 
+            const container = document.getElementById('optik-form-sonuc'); 
+            container.innerHTML = sonuc.sorular.map(soru => { 
+                const ogrenciCevabi = sonuc.ogrenciCevaplari[soru.id]; 
+                const dogruCevap = soru.dogruCevap; 
+                let durumText = '', durumClass = ''; 
+                if (!ogrenciCevabi) { 
+                    durumText = 'BOŞ'; 
+                    durumClass = 'bg-slate-500'; 
+                } else if (ogrenciCevabi === dogruCevap) { 
+                    durumText = 'DOĞRU'; 
+                    durumClass = 'bg-green-500'; 
+                } else { 
+                    durumText = 'YANLIŞ'; 
+                    durumClass = 'bg-red-500'; 
+                } 
+                return `<div class="p-3 bg-slate-50 rounded-lg flex items-center gap-4 cursor-pointer hover:bg-slate-100 transition-colors" data-soru-id="${soru.id}">
+                        <div class="font-bold text-slate-700 w-16">${soru.id}. Soru</div>
+                        <div class="flex-grow flex justify-start gap-2">
+                            ${['A', 'B', 'C', 'D', 'E'].map(secenek => {
+                                let siniflar = 'w-9 h-9 flex items-center justify-center rounded-full font-semibold border-2 relative';
+                                if (secenek === dogruCevap) {
+                                    siniflar += ' bg-green-100 border-green-500 text-green-700';
+                                } else if (secenek === ogrenciCevabi) {
+                                    siniflar += ' bg-red-100 border-red-500 text-red-700';
+                                } else {
+                                    siniflar += ' bg-white border-slate-200 text-slate-600';
+                                }
+                                if(secenek === ogrenciCevabi && ogrenciCevabi === dogruCevap){
+                                     siniflar += ' ring-2 ring-offset-2 ring-sky-500';
+                                }
+                                return `<div class="${siniflar}">${secenek}</div>`;
+                            }).join('')}
+                        </div>
+                        <div class="text-white text-xs font-bold px-3 py-1 rounded-full ${durumClass}">${durumText}</div>
+                    </div>`; 
+            }).join(''); 
+        }
+
+        function showSoruDetayPopup(soruId) { 
+            const popup = ui.soruDetayPopup; 
+            const soru = state.sonSonuc.sorular.find(s => s.id === soruId); 
+            const ogrenciCevabi = state.sonSonuc.ogrenciCevaplari[soruId]; 
+            const dogruCevap = soru.dogruCevap; 
+            document.getElementById('soru-detay-baslik').textContent = `Soru ${soru.id} Detayı`; 
+            document.getElementById('soru-detay-metin').innerHTML = soru.metin; 
+            const seceneklerContainer = document.getElementById('soru-detay-secenekler'); 
+            seceneklerContainer.innerHTML = soru.secenekler.map((secenekMetni, index) => { 
+                const secenekHarfi = String.fromCharCode(65 + index); 
+                let rowClass = 'flex justify-between items-center p-4 rounded-lg border-2'; 
+                let iconHtml = '<span></span>'; 
+                const isCorrect = (secenekHarfi === dogruCevap); 
+                const isStudentAnswer = (secenekHarfi === ogrenciCevabi); 
+                if (isCorrect) { 
+                    rowClass += ' bg-green-50 border-green-500'; 
+                    iconHtml = '<span class="text-green-600 font-bold text-xl">✓</span>'; 
+                } else if (isStudentAnswer && !isCorrect) { 
+                    rowClass += ' bg-red-50 border-red-500'; 
+                    iconHtml = '<span class="text-red-600 font-bold text-xl">✗</span>'; 
+                } else { 
+                    rowClass += ' border-slate-200';
+                } 
+                return `<li class="${rowClass}"><div><span class="font-bold text-slate-800 mr-2">${secenekHarfi})</span><span class="text-slate-700">${secenekMetni}</span></div>${iconHtml}</li>`; 
+            }).join(''); 
+            showModal(popup);
+        }
+
+        function sorulariPDFIndir(forceDownload = false) {
+            const canDownload = state.sinavAktif || forceDownload || state.isReviewMode;
+            if (!canDownload || !state.sorular || state.sorular.length === 0) {
+                alert("Yazdırmak için geçerli bir sınav verisi bulunmalıdır.");
+                return;
+            }
+            const { isim, soyisim, email } = state.currentUser;
+            const ogrenciAdi = (isim && soyisim) ? `${isim} ${soyisim}` : email;
+            const sinavBasligi = `Çıkmış Sorular Sınav Kitapçığı`;
+            const tarih = new Date().toLocaleDateString('tr-TR');
+            const printStyles = `<style>@page{size:A4;margin:20mm 15mm}body{font-family:'Carlito',Calibri,sans-serif;color:#333}.main-header{text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:15px;page-break-after:avoid}.main-header h1{font-size:22px;margin:0 0 5px 0;color:#111;font-weight:700}.main-header p{font-size:12px;margin:0;color:#555}.content{column-count:2;column-gap:15mm;column-rule:1px solid #ccc}.question-block{page-break-inside:avoid;-webkit-column-break-inside:avoid;break-inside:avoid;margin-bottom:14px}.question-title{font-size:11.5px;font-weight:700;color:#000;line-height:1.5;margin-bottom:8px}.options-list{padding-left:5px;font-size:11px;line-height:1.5}.option-item{margin-bottom:5px}.option-item strong{font-weight:700}.page-footer{position:fixed;bottom:10mm;left:15mm;right:15mm;text-align:center;font-size:10px;color:#888}.page-number::after{content:counter(page)}</style>`;
+            let headerHTML = `<div class="main-header"><h1>${sinavBasligi}</h1><p>Öğrenci: ${ogrenciAdi} &nbsp;&nbsp;|&nbsp;&nbsp; Tarih: ${tarih}</p></div>`;
+            let contentHTML = '<div class="content">';
+            state.sorular.forEach((soru, index) => {
+                const soruMetni = soru.metin.replace(/<[^>]*>?/gm, '');
+                contentHTML += `<div class="question-block"><div class="question-title">${index + 1}. ${soruMetni}</div><div class="options-list">`;
+                soru.secenekler.forEach((secenek, i) => {
+                    const harf = String.fromCharCode(65 + i);
+                    const secenekMetni = secenek.replace(/<[^>]*>?/gm, '');
+                    contentHTML += `<div class="option-item"><strong>${harf})</strong> ${secenekMetni}</div>`;
+                });
+                contentHTML += `</div></div>`;
+            });
+            contentHTML += `</div>`;
+            let footerHTML = `<div class="page-footer"><span class="page-number"></span></div>`;
+            const printWindow = window.open('', '', 'height=800,width=800');
+            printWindow.document.write(`<html><head><title>${sinavBasligi} - ${ogrenciAdi}</title>${printStyles}</head><body>${headerHTML}${contentHTML}${footerHTML}</body></html>`);
+            printWindow.document.close();
+            setTimeout(() => { printWindow.focus(); printWindow.print(); printWindow.close(); }, 500);
+        }
+    </script>
+</body>
+</html>
+
