@@ -1,174 +1,180 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elektronik Sınav Uygulaması</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #aaa; }
-        .question-text mark { background-color: #fff59d; border-radius: 3px; padding: 0 2px; cursor: pointer; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elektronik Sınav Uygulaması</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #aaa; }
+        .question-text mark { background-color: #fff59d; border-radius: 3px; padding: 0 2px; cursor: pointer; }
+    </style>
 </head>
 <body class="bg-slate-100">
 
-    <div id="app-container">
-                <div id="sinav-arayuzu" class="flex flex-col min-h-screen">
-            <header class="bg-slate-800 text-white shadow-md sticky top-0 z-40">
-                <div class="container mx-auto px-4 py-3 text-center">
-                    <h1 class="text-xl font-bold">Elektronik Sınav Uygulaması</h1>
-                </div>
-            </header>
-            <div class="bg-white border-b border-slate-200 sticky top-[61px] z-40">
-                <div class="container mx-auto px-4 py-2 flex flex-wrap justify-between items-center gap-4">
-                     <div class="user-info flex items-center gap-3">
-                        <svg class="w-10 h-10 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C16.43 19.18 14.03 20 12 20z"/></svg>
-                        <div class="user-details"><strong class="kullanici-ad-soyad font-semibold text-slate-700">Yükleniyor...</strong></div>
-                    </div>
-                    <div class="time-info flex items-center gap-2">
-                        <span class="time-label text-slate-500">Kalan Süre:</span>
-                        <span id="main-exam-timer" class="time-box font-mono text-2xl font-bold text-red-600">--:--:--</span>
-                    </div>
-                    <div class="status-controls flex gap-2">
-                         <button id="sinav-pdf-indir-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center gap-2 transform hover:scale-105">📄 Soruları İndir</button>
-                         <button id="sinav-sonlandir-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center gap-2 transform hover:scale-105">🛑 Sınavı Sonlandır</button>
-                         <button id="sonuclara-don-btn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 items-center gap-2 hidden transform hover:scale-105">📊 Sonuçlara Dön</button>
-                    </div>
-                </div>
-            </div>
+    <div id="app-container">
+        <!-- SINAV ARAYÜZÜ -->
+        <div id="sinav-arayuzu" class="flex flex-col min-h-screen">
+            <header class="bg-slate-800 text-white shadow-md sticky top-0 z-40">
+                <div class="container mx-auto px-4 py-3 text-center">
+                    <h1 class="text-xl font-bold">Elektronik Sınav Uygulaması</h1>
+                </div>
+            </header>
+            <div class="bg-white border-b border-slate-200 sticky top-[61px] z-40">
+                <div class="container mx-auto px-4 py-2 flex flex-wrap justify-between items-center gap-4">
+                     <div class="user-info flex items-center gap-3">
+                         <svg class="w-10 h-10 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C16.43 19.18 14.03 20 12 20z"/></svg>
+                         <div class="user-details"><strong class="kullanici-ad-soyad font-semibold text-slate-700">Yükleniyor...</strong></div>
+                     </div>
+                     <div class="time-info flex items-center gap-2">
+                         <span class="time-label text-slate-500">Kalan Süre:</span>
+                         <span id="main-exam-timer" class="time-box font-mono text-2xl font-bold text-red-600">--:--:--</span>
+                     </div>
+                     <div class="status-controls flex gap-2">
+                          <button id="sinav-pdf-indir-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center gap-2 transform hover:scale-105">📄 Soruları İndir</button>
+                          <button id="sinav-sonlandir-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center gap-2 transform hover:scale-105">🛑 Sınavı Sonlandır</button>
+                          <button id="sonuclara-don-btn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 items-center gap-2 hidden transform hover:scale-105">📊 Sonuçlara Dön</button>
+                     </div>
+                </div>
+            </div>
 
-            <main class="container mx-auto px-4 py-8 flex-grow max-w-7xl">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    
-                    <div class="lg:col-span-2 bg-white p-6 sm:p-8 rounded-2xl shadow-lg flex flex-col">
-                        <div id="soru-icerik" class="flex-grow">
-                                                    </div>
-                        <div class="flex justify-between mt-8 pt-6 border-t border-slate-200">
-                            <button id="prev-btn" class="nav-button bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-6 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed no-select transform hover:scale-105 disabled:scale-100">← Önceki</button>
-                            <button id="next-btn" class="nav-button bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed no-select transform hover:scale-105 disabled:scale-100">Sonraki →</button>
-                        </div>
-                    </div>
+            <main class="container mx-auto px-4 py-8 flex-grow max-w-7xl">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                   
+                    <div class="lg:col-span-2 bg-white p-6 sm:p-8 rounded-2xl shadow-lg flex flex-col">
+                        <div id="soru-icerik" class="flex-grow">
+                            <!-- Soru içeriği buraya dinamik olarak gelecek -->
+                        </div>
+                        <div class="flex justify-between mt-8 pt-6 border-t border-slate-200">
+                            <button id="prev-btn" class="nav-button bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-6 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed no-select transform hover:scale-105 disabled:scale-100">← Önceki</button>
+                            <button id="next-btn" class="nav-button bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed no-select transform hover:scale-105 disabled:scale-100">Sonraki →</button>
+                        </div>
+                    </div>
 
-                    <aside class="bg-white p-6 rounded-2xl shadow-lg lg:sticky lg:top-40">
-                        <h3 class="text-xl font-bold text-center mb-4 pb-2 border-b-2 border-slate-200">Optik Form</h3>
-                        <div id="optik-form-icerik" class="space-y-2 max-h-[calc(100vh-250px)] overflow-y-auto custom-scrollbar pr-2">
-                                                    </div>
-                    </aside>
-                </div>
-            </main>
-        </div>
+                    <aside class="bg-white p-6 rounded-2xl shadow-lg lg:sticky lg:top-40">
+                        <h3 class="text-xl font-bold text-center mb-4 pb-2 border-b-2 border-slate-200">Optik Form</h3>
+                        <div id="optik-form-icerik" class="space-y-2 max-h-[calc(100vh-250px)] overflow-y-auto custom-scrollbar pr-2">
+                            <!-- Optik form içeriği buraya dinamik olarak gelecek -->
+                        </div>
+                    </aside>
+                </div>
+            </main>
+        </div>
 
-                <div id="sonuc-arayuzu" class="hidden">
-             <header class="bg-slate-800 text-white shadow-md">
-                <div class="container mx-auto px-4 py-3 text-center">
-                    <h1 class="text-xl font-bold">Sınav Sonuç Raporu: <span id="sonuc-kullanici-ad-soyad"></span></h1>
-                </div>
-            </header>
-             <div class="container mx-auto px-4 py-8 max-w-4xl">
-                <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg mb-6 border-l-8 border-sky-500">
-          _E           <div class="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12">
-                        <div class="text-center">
-                            <p class="text-lg text-slate-500">Net Puanınız</p>
-                            <p id="net-sayisi-buyuk" class="text-7xl font-bold text-slate-800">0.00</p>
-                        </div>
-                        <div class="w-full flex-1 max-w-xs space-y-3">
-                            <div class="flex justify-between items-baseline text-lg">
-                                <span class="font-semibold text-green-600">DOĞRU</span>
-                                <span id="dogru-sayisi" class="text-2xl font-bold text-green-600">0</span>
-                            </div>
-                             <div class="flex justify-between items-baseline text-lg">
-                                <span class="font-semibold text-red-600">YANLIŞ</span>
-                                <span id="yanlis-sayisi" class="text-2xl font-bold text-red-600">0</span>
-                            </div>
-                             <div class="flex justify-between items-baseline text-lg">
-                      _B           <span class="font-semibold text-slate-500">BOŞ</span>
-                                <span id="bos-sayisi" class="text-2xl font-bold text-slate-500">0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                 <div class="bg-white p-6 rounded-2xl shadow-lg mb-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <button id="yeni-sinav-btn" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">🚀 Yeni Sınava Başla</button>
-                        <button id="sorulari-incele-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">🔍 Soruları İncele</button>
-                        <button id="sonuc-pdf-indir-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">📄 Kitapçığı İndir</button>
-                        <button id="gecmis-sayfasina-git-btn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">📜 Tüm Geçmişim</button>
-                    </div>
-                 </div>
-                 <div class="bg-white p-6 rounded-2xl shadow-lg">
-                    <h3 class="text-xl font-bold text-center mb-4 pb-2 border-b-2 border-slate-200">Cevap Anahtarı ve Detaylar</h3>
-                    <div id="optik-form-sonuc" class="space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
-                                            </div>
-                 </div>
-             </div>
-        </div>
+        <!-- SONUÇ ARAYÜZÜ -->
+        <div id="sonuc-arayuzu" class="hidden">
+             <header class="bg-slate-800 text-white shadow-md">
+                 <div class="container mx-auto px-4 py-3 text-center">
+                     <h1 class="text-xl font-bold">Sınav Sonuç Raporu: <span id="sonuc-kullanici-ad-soyad"></span></h1>
+                 </div>
+             </header>
+              <div class="container mx-auto px-4 py-8 max-w-4xl">
+                 <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg mb-6 border-l-8 border-sky-500">
+                     <div class="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12">
+                         <div class="text-center">
+                             <p class="text-lg text-slate-500">Net Puanınız</p>
+                             <p id="net-sayisi-buyuk" class="text-7xl font-bold text-slate-800">0.00</p>
+                         </div>
+                         <div class="w-full flex-1 max-w-xs space-y-3">
+                             <div class="flex justify-between items-baseline text-lg">
+                                 <span class="font-semibold text-green-600">DOĞRU</span>
+                                 <span id="dogru-sayisi" class="text-2xl font-bold text-green-600">0</span>
+                             </div>
+                              <div class="flex justify-between items-baseline text-lg">
+                                 <span class="font-semibold text-red-600">YANLIŞ</span>
+                                 <span id="yanlis-sayisi" class="text-2xl font-bold text-red-600">0</span>
+                             </div>
+                              <div class="flex justify-between items-baseline text-lg">
+                                 <span class="font-semibold text-slate-500">BOŞ</span>
+                                 <span id="bos-sayisi" class="text-2xl font-bold text-slate-500">0</span>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                  <div class="bg-white p-6 rounded-2xl shadow-lg mb-6">
+                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                         <button id="yeni-sinav-btn" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">🚀 Yeni Sınava Başla</button>
+                         <button id="sorulari-incele-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">🔍 Soruları İncele</button>
+                         <button id="sonuc-pdf-indir-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">📄 Kitapçığı İndir</button>
+                         <button id="gecmis-sayfasina-git-btn" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">📜 Tüm Geçmişim</button>
+                     </div>
+                  </div>
+                  <div class="bg-white p-6 rounded-2xl shadow-lg">
+                     <h3 class="text-xl font-bold text-center mb-4 pb-2 border-b-2 border-slate-200">Cevap Anahtarı ve Detaylar</h3>
+                     <div id="optik-form-sonuc" class="space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
+                         <!-- Sonuç optik formu buraya gelecek -->
+                     </div>
+                  </div>
+              </div>
+        </div>
 
-                <div id="onay-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center transform transition-all scale-95 opacity-0">
-                <h2 class="text-2xl font-bold mb-4 text-slate-800">Emin misiniz?</h2>
-                <p id="onay-mesaji" class="text-slate-600 mb-6"></p>
-                <div class="flex gap-4">
-                    <button id="onay-iptal-btn" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 rounded-lg transition">İptal</button>
-                    <button id="onay-devam-btn" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition">Evet, Onayla</button>
-                </div>
-            </div>
-        </div>
+        <!-- MODAL PENCERELER -->
+        <div id="onay-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center transform transition-all scale-95 opacity-0">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800">Emin misiniz?</h2>
+                <p id="onay-mesaji" class="text-slate-600 mb-6"></p>
+                <div class="flex gap-4">
+                    <button id="onay-iptal-btn" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 rounded-lg transition">İptal</button>
+                    <button id="onay-devam-btn" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition">Evet, Onayla</button>
+                </div>
+            </div>
+        </div>
 
-        <div id="bilgi-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-             <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center transform transition-all scale-95 opacity-0">
-                <h2 class="text-2xl font-bold mb-4 text-slate-800">Bilgi</h2>
-                <p id="bilgi-mesaji" class="text-slate-600 mb-6"></p>
-                <button id="bilgi-kapat-btn" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-lg transition">Tamam</button>
-            </div>
-        </div>
+        <div id="bilgi-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+             <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center transform transition-all scale-95 opacity-0">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800">Bilgi</h2>
+                <p id="bilgi-mesaji" class="text-slate-600 mb-6"></p>
+                <button id="bilgi-kapat-btn" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-lg transition">Tamam</button>
+            </div>
+        </div>
 
-        <div id="sayac-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-İ           <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center transform transition-all scale-95 opacity-0">
-                <h2 class="text-2xl font-bold mb-2 text-slate-800">Sonuçlar Hazırlanıyor...</h2>
-                <p class="text-slate-600 mb-4">Lütfen bekleyin, sonuçlarınız saniyeler içinde görüntülenecek.</p>
-                <div id="gerisayim-sayaci" class="text-7xl font-bold text-sky-500">10</div>
-            </div>
-        </div>
+        <div id="sayac-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center transform transition-all scale-95 opacity-0">
+                <h2 class="text-2xl font-bold mb-2 text-slate-800">Sonuçlar Hazırlanıyor...</h2>
+                <p class="text-slate-600 mb-4">Lütfen bekleyin, sonuçlarınız saniyeler içinde görüntülenecek.</p>
+                <div id="gerisayim-sayaci" class="text-7xl font-bold text-sky-500">10</div>
+            </div>
+        </div>
 
-        <div id="soru-detay-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-             <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl flex flex-col max-h-[90vh] transform transition-all scale-95 opacity-0">
-                <div class="p-6 border-b border-slate-200">
-                    <h3 id="soru-detay-baslik" class="text-xl font-bold text-slate-800"></h3>
-                </div>
-                <div class="p-6 flex-grow overflow-y-auto custom-scrollbar">
-                    <div id="soru-detay-metin" class="bg-slate-100 p-4 rounded-lg mb-6 text-lg"></div>
-                    <ul id="soru-detay-secenekler" class="space-y-3"></ul>
-                </div>
-                <div class="p-4 bg-slate-50 border-t border-slate-200 text-right rounded-b-2xl">
-                    <button id="soru-detay-kapat-btn" class="bg-slate-600 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-lg transition">Kapat</button>
-                </div>
-             </div>
-        </div>
+        <div id="soru-detay-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+             <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl flex flex-col max-h-[90vh] transform transition-all scale-95 opacity-0">
+                <div class="p-6 border-b border-slate-200">
+                    <h3 id="soru-detay-baslik" class="text-xl font-bold text-slate-800"></h3>
+                </div>
+                <div class="p-6 flex-grow overflow-y-auto custom-scrollbar">
+                    <div id="soru-detay-metin" class="bg-slate-100 p-4 rounded-lg mb-6 text-lg"></div>
+                    <ul id="soru-detay-secenekler" class="space-y-3"></ul>
+                </div>
+                <div class="p-4 bg-slate-50 border-t border-slate-200 text-right rounded-b-2xl">
+                    <button id="soru-detay-kapat-btn" class="bg-slate-600 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-lg transition">Kapat</button>
+                </div>
+             </div>
+        </div>
 
-    </div>
-   
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-        import { getFirestore, collection, doc, getDoc, setDoc, addDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    </div>
+   
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, collection, doc, getDoc, setDoc, addDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyAvaEaHtTwcuCDBIggJGd4w_nzJQM5UlmY", authDomain: "teacher-adminpanel.firebaseapp.com", projectId: "teacher-adminpanel", storageBucket: "teacher-adminpanel.appspot.com", messagingSenderId: "901735644134", appId: "1:901735644134:web:a6aa575a0754de1333f427", measurementId: "G-68BWZJYCK9" };
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
- 
-        
-        const SORU_HAVUZU = [
-{
+        const firebaseConfig = { apiKey: "AIzaSyAvaEaHtTwcuCDBIggJGd4w_nzJQM5UlmY", authDomain: "teacher-adminpanel.firebaseapp.com", projectId: "teacher-adminpanel", storageBucket: "teacher-adminpanel.appspot.com", messagingSenderId: "901735644134", appId: "1:901735644134:web:a6aa575a0754de1333f427", measurementId: "G-68BWZJYCK9" };
+       
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+   
+        // --- SORU HAVUZU ---
+        const SORU_HAVUZU = [
+            {
         "metin": "One socio-psychological explanation of violence suggests that frustrating situations make people angry and increase their ---- to act aggressively.",
         "secenekler": [
             "addiction",
@@ -222,6 +228,281 @@
             "decline"
         ],
         "dogruCevap": "D"
+    },
+{
+        "metin": "Seoul is busy reinventing itself and practically rebuilding the city with an eye to improving ---- the aesthetic value ---- the commercial value of the city.",
+        "secenekler": [
+            "such / as",
+            "so / that",
+            "not only / but also",
+            "less / than",
+            "neither / nor"
+        ],
+        "dogruCevap": "C"
+    },
+{
+        "metin": "---- we often consider the word 'fluid' to apply only to liquids, gases are also accepted as fluids in physics since they behave similarly in many situations.",
+        "secenekler": [
+            "Because",
+            "In order that",
+            "Although",
+            "By the time",
+            "Provided that"
+        ],
+        "dogruCevap": "C"
+    },
+{
+        "metin": "Philosophy occurs in all cultures and daily life, ---- only in Western philosophy is there a distinct way of thinking that consists of hypotheses and generalisations about the natural and human worlds.",
+        "secenekler": [
+            "since",
+            "so that",
+            "provided that",
+            "but",
+            "otherwise"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Because individual genes are ---- small ---- be seen microscopically, standard chromosome analysis generally is not helpful.",
+        "secenekler": [
+            "so / that",
+            "too / to",
+            "as well / as",
+            "such / as",
+            "less / than"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Most modern theories of personality disorder propose that these disorders develop in response to biopsychosocial factors, although the theories differ ---- the weight they ascribe to these component parts.",
+        "secenekler": [
+            "in terms of",
+            "at the expense of",
+            "rather than",
+            "in contrast with",
+            "as well as"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "Descartes was the first to publish a detailed account of how to use coordinates for locating points in space ---- Fermat had developed the concept slightly earlier.",
+        "secenekler": [
+            "although",
+            "by the time",
+            "provided that",
+            "since",
+            "so that"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "---- most snakes are not venomous, any snake bite should immediately be examined at a hospital.",
+        "secenekler": [
+            "By the time",
+            "If",
+            "Since",
+            "Although",
+            "As long as"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "---- a fluorescent light bulb does not provide light through the continual heating of a metallic filament, it consumes much less electricity than the normal light bulb.",
+        "secenekler": [
+            "Even though",
+            "In case",
+            "Because",
+            "As if",
+            "So that"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "---- a metropolis can build new power plants to meet a rising need for electricity, our muscles respond to the demands of exercise by producing tiny new structures inside cells that supply the body with energy.",
+        "secenekler": [
+            "Now that",
+            "Even though",
+            "Only if",
+            "Just as",
+            "In case"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "A thyroid biopsy is usually required when a painless lump or a nodule is detected, ---- by the patient ---- by a doctor during a routine physical examination.",
+        "secenekler": [
+            "neither / nor",
+            "either / or",
+            "as / as",
+            "no sooner / than",
+            "the more / the more"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Video-gamers may think they are great multi-taskers ---- research suggests that they are no better at driving while talking than anyone else.",
+        "secenekler": [
+            "once",
+            "until",
+            "if",
+            "because",
+            "but"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "Psychotherapists recommend that anyone witnessing a bullying incident support the victim ---- they will not have to confront the issue alone.",
+        "secenekler": [
+            "although",
+            "so that",
+            "just as",
+            "after",
+            "when"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "---- ​pizza has taken many forms, and its composition, seasonings, and methods of preparation have altered radically over the years, it has usually been a flat bread baked at high temperatures.",
+        "secenekler": [
+            "In case",
+            "As soon as",
+            "Before",
+            "Even though",
+            "Because"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "---- public interest in exercise is generally thought to have increased over the last 30 years, it is reported that only 27% of adults do exercise regularly.",
+        "secenekler": [
+            "Now that",
+            "As long as",
+            "Provided",
+            "While",
+            "Unless"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "The range of objects that art historians study is constantly expanding and now includes computer-generated images, ---- in the past almost nothing produced using a machine would have been regarded as art.",
+        "secenekler": [
+            "in case",
+            "as though",
+            "because",
+            "unless",
+            "whereas"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "The first generation antihistamines may produce side effects, ---- drowsiness, dry mouth, blurred vision, and constipation.",
+        "secenekler": [
+            "such as",
+            "as well as",
+            "unlike",
+            "so that",
+            "in spite of"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "---- any stage of the digestive process is kept from doing its job properly, the food cannot proceed to complete digestion.",
+        "secenekler": [
+            "Until",
+            "So that",
+            "Although",
+            "Whenever",
+            "Since"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "There are viruses that are unfamiliar to our immune system, which means that ---- our natural defences ---- existing vaccines can protect us against them.",
+        "secenekler": [
+            "if / then",
+            "as / well",
+            "rather / than",
+            "neither / nor",
+            "such / that"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Extensive scientific literature shows that people who closely follow a Mediterranean diet are ---- less likely to develop heart-related issues, ---- have a reduced risk of cognitive impairment.",
+        "secenekler": [
+            "neither / nor",
+            "not only / but also",
+            "as / as",
+            "no sooner / than",
+            "so / that"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "---- safety issues surrounding early rocket designs, another difficulty was that the spacecraft and rockets could be used only once.",
+        "secenekler": [
+            "Despite",
+            "In contrast with",
+            "Unlike",
+            "On behalf of",
+            "In addition to"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "---- everyone's brain loses volume over time, the shrinkage happens faster in people who have trouble sleeping than in those who are better rested.",
+        "secenekler": [
+            "Whereas",
+            "Since",
+            "As long as",
+            "Once",
+            "As if"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "They are some of the oldest monuments in the world, ---- much about Egypt's pyramids remains a mystery.",
+        "secenekler": [
+            "but",
+            "otherwise",
+            "as",
+            "supposed that",
+            "once"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "---- a vaccine effective against human hepatitis B virus has been produced for a couple of decades, its availability and delivery have not been universal.",
+        "secenekler": [
+            "As soon as",
+            "Though",
+            "Once",
+            "Since",
+            "After"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Liposuction is not a generally recommended treatment for cellulite ---- it is an invasive and potentially life-threatening procedure.",
+        "secenekler": [
+            "whether",
+            "because",
+            "although",
+            "whenever",
+            "as though"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "---- biofuels are presented as a more environmental source of fuel for cars and trucks, if they are produced at the expense of rainforests, the net environmental effect will be far worse even than using fossil fuel.",
+        "secenekler": [
+            "Although",
+            "Since",
+            "As long as",
+            "Just as",
+            "Unless"
+        ],
+        "dogruCevap": "A"
     },
     {
         "metin": "Even though many researchers have described what happens during the course of language development, ----.",
@@ -442,614 +723,597 @@
             "Historians suggest that some of the world’s first personal grooming products, from deodorant to toothpaste, might have been invented by the ancient Egyptians who wanted to improve their smell and appearance."
         ],
         "dogruCevap": "A"
-    }, 
+    },
+        ];
+       
+        const ui = { 
+            sinavArayuzu: document.getElementById('sinav-arayuzu'), 
+            sonucArayuzu: document.getElementById('sonuc-arayuzu'), 
+            soruIcerik: document.getElementById('soru-icerik'), 
+            optikFormIcerik: document.getElementById('optik-form-icerik'), 
+            sinavPdfIndirBtn: document.getElementById('sinav-pdf-indir-btn'),
+            onayPopup: document.getElementById('onay-popup'),
+            bilgiPopup: document.getElementById('bilgi-popup'),
+            sayacPopup: document.getElementById('sayac-popup'),
+            soruDetayPopup: document.getElementById('soru-detay-popup')
+        };
 
-        ];
-        
-        const ui = { 
-            sinavArayuzu: document.getElementById('sinav-arayuzu'), 
-            sonucArayuzu: document.getElementById('sonuc-arayuzu'), 
-            soruIcerik: document.getElementById('soru-icerik'), 
-            optikFormIcerik: document.getElementById('optik-form-icerik'), 
-            sinavPdfIndirBtn: document.getElementById('sinav-pdf-indir-btn'),
-            onayPopup: document.getElementById('onay-popup'),
-            bilgiPopup: document.getElementById('bilgi-popup'),
-            sayacPopup: document.getElementById('sayac-popup'),
-            soruDetayPopup: document.getElementById('soru-detay-popup')
-        };
+        const SINAVDAKI_SORU_SAYISI = SORU_HAVUZU.length; 
+        const SORU_BASINA_DAKIKA = 1.5;
+        const SINAV_SURESI_DAKIKA = Math.ceil(SINAVDAKI_SORU_SAYISI * SORU_BASINA_DAKIKA);
+        let state = {};
+        let unsubscribeOnSnapshot = null;
 
-        const SINAVDAKI_SORU_SAYISI = SORU_HAVUZU.length; 
-        const SORU_BASINA_DAKIKA = 1.5;
-        const SINAV_SURESI_DAKIKA = Math.ceil(SINAVDAKI_SORU_SAYISI * SORU_BASINA_DAKIKA);
-        let state = {};
-        let unsubscribeOnSnapshot = null;
+        function resetState() { 
+            state = { 
+                currentUser: state.currentUser,
+                mevcutSoruIndex: 0, 
+                sorular: [], 
+                ogrenciCevaplari: {}, 
+                ustuCiziliSecenekler: {}, 
+                sinavAktif: false, 
+                isReviewMode: false, 
+                mainTimerInterval: null, 
+                sonSonuc: null 
+            }; 
+        }
+       
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userData = await kullaniciVerisiCek(user.uid);
+                state.currentUser = { ...user, ...userData };
+               
+                kullaniciBilgileriniYukle();
+                olayDinleyicileriEkle();
+                canliOturumDinleyicisiEkle();
 
-        function resetState() { 
-            state = { 
-                currentUser: state.currentUser,
-                mevcutSoruIndex: 0, 
-                sorular: [], 
-                ogrenciCevaplari: {}, 
-                ustuCiziliSecenekler: {}, 
-                sinavAktif: false, 
-                isReviewMode: false, 
-                mainTimerInterval: null, 
-                sonSonuc: null 
-            }; 
-        }
-        
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const userData = await kullaniciVerisiCek(user.uid);
-                state.currentUser = { ...user, ...userData };
-                
-                kullaniciBilgileriniYukle();
-                olayDinleyicileriEkle();
-                canliOturumDinleyicisiEkle();
+                const reviewDataString = sessionStorage.getItem('reviewData');
+                if (reviewDataString) {
+                    const reviewData = JSON.parse(reviewDataString);
+                    sinaviIncelemeModundaBaslat(reviewData);
+                    sessionStorage.removeItem('reviewData');
+                } else {
+                    if (sessionStorage.getItem('sinavAktif')) {
+                        sessionStorage.removeItem('sinavAktif');
+                        document.body.innerHTML = `<div class="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+                            <h1 class="text-2xl font-bold text-red-600">Sınav esnasında sayfa yenilemek kural dışıdır. Oturumunuz sonlandırıldı.</h1>
+                            <a href='./index.html' class="mt-4 bg-sky-500 text-white font-bold py-2 px-4 rounded-lg">Ana Sayfaya Dön</a>
+                        </div>`;
+                        return;
+                    }
+                    sinaviBaslat();
+                }
+            } else {
+                window.location.href = './index.html';
+            }
+        });
 
-                const reviewDataString = sessionStorage.getItem('reviewData');
-                if (reviewDataString) {
-                    const reviewData = JSON.parse(reviewDataString);
-                    sinaviIncelemeModundaBaslat(reviewData);
-                    sessionStorage.removeItem('reviewData');
-                } else {
-                    if (sessionStorage.getItem('sinavAktif')) {
-                        sessionStorage.removeItem('sinavAktif');
-                        document.body.innerHTML = `<div class="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-                            <h1 class="text-2xl font-bold text-red-600">Sınav esnasında sayfa yenilemek kural dışıdır. Oturumunuz sonlandırıldı.</h1>
-                            <a href='./index.html' class="mt-4 bg-sky-500 text-white font-bold py-2 px-4 rounded-lg">Ana Sayfaya Dön</a>
-                        </div>`;
-                        return;
-                    }
-                    sinaviBaslat();
-                }
-            } else {
-                window.location.href = './index.html';
-            }
-        });
+        async function kullaniciVerisiCek(uid) {
+            const userDocRef = doc(db, "kullanicilar", uid);
+            try {
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    return docSnap.data();
+                } else {
+                    console.warn("Kullanıcı veri dokümanı bulunamadı.");
+                    return { isim: null, soyisim: null };
+                }
+            } catch (error) {
+                console.error("Kullanıcı verisi çekilirken hata:", error);
+                return { isim: null, soyisim: null };
+            }
+        }
 
-        async function kullaniciVerisiCek(uid) {
-            const userDocRef = doc(db, "kullanicilar", uid);
-            try {
-                const docSnap = await getDoc(userDocRef);
-                if (docSnap.exists()) {
-                    return docSnap.data();
-                } else {
-                    console.warn("Kullanıcı veri dokümanı bulunamadı.");
-                    return { isim: null, soyisim: null };
-                }
-            } catch (error) {
-                console.error("Kullanıcı verisi çekilirken hata:", error);
-                return { isim: null, soyisim: null };
-            }
-        }
+        function kullaniciBilgileriniYukle() {
+            if(state.currentUser) {
+                const { isim, soyisim, email } = state.currentUser;
+                const gorunecekIsim = (isim && soyisim) ? `${isim} ${soyisim}` : (email);
+                document.querySelector('.kullanici-ad-soyad').textContent = gorunecekIsim;
+            }
+        }
 
-        function kullaniciBilgileriniYukle() {
-            if(state.currentUser) {
-                const { isim, soyisim, email } = state.currentUser;
-                const gorunecekIsim = (isim && soyisim) ? `${isim} ${soyisim}` : (email);
-                document.querySelector('.kullanici-ad-soyad').textContent = gorunecekIsim;
-            }
-        }
+        function olayDinleyicileriEkle() {
+            document.getElementById('sinav-sonlandir-btn').addEventListener('click', () => { showOnayPopup('Sınavı sonlandırmak istediğinize emin misiniz? Cevaplarınız kaydedilecek.', () => sinaviSonlandir(true), 'Evet, Sonlandır'); });
+            document.getElementById('prev-btn').addEventListener('click', oncekiSoru);
+            document.getElementById('next-btn').addEventListener('click', sonrakiSoru);
+            document.getElementById('sorulari-incele-btn').addEventListener('click', () => { if (state.sonSonuc) { sessionStorage.setItem('reviewData', JSON.stringify(state.sonSonuc)); window.location.reload(); } });
+            document.getElementById('gecmis-sayfasina-git-btn').addEventListener('click', () => { window.location.href = './gecmis-sinavlar.html'; });
+            document.getElementById('yeni-sinav-btn').addEventListener('click', () => { window.location.href = './index.html'; });
+           
+            ui.soruIcerik.addEventListener('click', (event) => {
+                if (state.isReviewMode) return;
+                const listItem = event.target.closest('li[data-option]');
+                if (listItem) {
+                    const soruId = state.sorular[state.mevcutSoruIndex].id;
+                    const secenek = listItem.dataset.option;
+                    selectAnswer(soruId, secenek);
+                }
+            });
 
-        function olayDinleyicileriEkle() {
-            document.getElementById('sinav-sonlandir-btn').addEventListener('click', () => { showOnayPopup('Sınavı sonlandırmak istediğinize emin misiniz? Cevaplarınız kaydedilecek.', () => sinaviSonlandir(true), 'Evet, Sonlandır'); });
-            document.getElementById('prev-btn').addEventListener('click', oncekiSoru);
-            document.getElementById('next-btn').addEventListener('click', sonrakiSoru);
-            document.getElementById('sorulari-incele-btn').addEventListener('click', () => { if (state.sonSonuc) { sessionStorage.setItem('reviewData', JSON.stringify(state.sonSonuc)); window.location.reload(); } });
-            document.getElementById('gecmis-sayfasina-git-btn').addEventListener('click', () => { window.location.href = './gecmis-sinavlar.html'; });
-            document.getElementById('yeni-sinav-btn').addEventListener('click', () => { window.location.href = './index.html'; });
-            
-            ui.soruIcerik.addEventListener('click', (event) => {
-                if (state.isReviewMode) return;
-                const listItem = event.target.closest('li[data-option]');
-                if (listItem) {
-                    const soruId = state.sorular[state.mevcutSoruIndex].id;
-                    const secenek = listItem.dataset.option;
-                    selectAnswer(soruId, secenek);
-                }
-            });
+            document.getElementById('optik-form-icerik').addEventListener('change', (event) => {
+               if (event.target.type === 'radio' && !state.isReviewMode) {
+                    const soruId = parseInt(event.target.dataset.soruId);
+                    const secenek = event.target.value;
+                    selectAnswer(soruId, secenek);
+               }
+            });
 
-            document.getElementById('optik-form-icerik').addEventListener('change', (event) => {
-                 if (event.target.type === 'radio' && !state.isReviewMode) {
-                    const soruId = parseInt(event.target.dataset.soruId);
-                    const secenek = event.target.value;
-                    selectAnswer(soruId, secenek);
-                 }
-            });
+            ui.soruIcerik.addEventListener('contextmenu', handleStrikethrough);
+            document.getElementById('optik-form-sonuc').addEventListener('click', (event) => { const satir = event.target.closest('[data-soru-id]'); if (satir && satir.dataset.soruId) { showSoruDetayPopup(parseInt(satir.dataset.soruId)); } });
+            document.getElementById('sonuclara-don-btn').addEventListener('click', () => { if (state.sonSonuc) { showSonucSayfasi(state.sonSonuc); } });
+           
+            ui.soruIcerik.addEventListener('mouseup', (event) => {
+                if (!event.target.closest('.question-text')) return;
+                const selection = window.getSelection();
+                if (selection.isCollapsed || selection.rangeCount === 0) return;
+                const range = selection.getRangeAt(0);
+                if (range.commonAncestorContainer.parentNode.closest('.question-text')) {
+                    const mark = document.createElement('mark');
+                    try { range.surroundContents(mark); } 
+                    catch (e) { console.warn("Seçim tam olarak sarılamadı.", e); }
+                }
+                selection.removeAllRanges();
+            });
 
-            ui.soruIcerik.addEventListener('contextmenu', handleStrikethrough);
-            document.getElementById('optik-form-sonuc').addEventListener('click', (event) => { const satir = event.target.closest('[data-soru-id]'); if (satir && satir.dataset.soruId) { showSoruDetayPopup(parseInt(satir.dataset.soruId)); } });
-            document.getElementById('sonuclara-don-btn').addEventListener('click', () => { if (state.sonSonuc) { showSonucSayfasi(state.sonSonuc); } });
-            
-            ui.soruIcerik.addEventListener('mouseup', (event) => {
-                if (!event.target.closest('.question-text')) return;
-                const selection = window.getSelection();
-                if (selection.isCollapsed || selection.rangeCount === 0) return;
-                const range = selection.getRangeAt(0);
-                if (range.commonAncestorContainer.parentNode.closest('.question-text')) {
-                    const mark = document.createElement('mark');
-                    try { range.surroundContents(mark); } 
-                    catch (e) { console.warn("Seçim tam olarak sarılamadı.", e); }
-                }
-                selection.removeAllRanges();
-            });
+            ui.soruIcerik.addEventListener('click', (event) => {
+                if (event.target.tagName === 'MARK' && event.target.closest('.question-text')) {
+                    const markElement = event.target;
+                    const parent = markElement.parentNode;
+                    markElement.replaceWith(document.createTextNode(markElement.textContent));
+                    parent.normalize();
+                }
+            });
 
-            ui.soruIcerik.addEventListener('click', (event) => {
-                if (event.target.tagName === 'MARK' && event.target.closest('.question-text')) {
-                    const markElement = event.target;
-                    const parent = markElement.parentNode;
-                    markElement.replaceWith(document.createTextNode(markElement.textContent));
-                    parent.normalize();
-                }
-            });
+            ui.sinavPdfIndirBtn.addEventListener('click', () => sorulariPDFIndir(false));
+            document.getElementById('sonuc-pdf-indir-btn').addEventListener('click', () => sorulariPDFIndir(true));
+           
+            document.getElementById('onay-iptal-btn').addEventListener('click', () => hideModal(ui.onayPopup));
+            document.getElementById('bilgi-kapat-btn').addEventListener('click', () => hideModal(ui.bilgiPopup));
+            document.getElementById('soru-detay-kapat-btn').addEventListener('click', () => hideModal(ui.soruDetayPopup));
+        }
+       
+        async function canliOturumDinleyicisiEkle() {
+            window.addEventListener('beforeunload', async () => {
+                if (state.sinavAktif && state.currentUser) {
+                    const sessionRef = doc(db, 'aktifOturumlar', state.currentUser.uid);
+                    await deleteDoc(sessionRef);
+                }
+            });
+        }
+       
+        async function sinaviSonlandir(kullaniciIstegi) {
+            state.sinavAktif = false;
+            if (unsubscribeOnSnapshot) unsubscribeOnSnapshot();
 
-            ui.sinavPdfIndirBtn.addEventListener('click', () => sorulariPDFIndir(false));
-            document.getElementById('sonuc-pdf-indir-btn').addEventListener('click', () => sorulariPDFIndir(true));
-            
-            document.getElementById('onay-iptal-btn').addEventListener('click', () => hideModal(ui.onayPopup));
-            document.getElementById('bilgi-kapat-btn').addEventListener('click', () => hideModal(ui.bilgiPopup));
-            document.getElementById('soru-detay-kapat-btn').addEventListener('click', () => hideModal(ui.soruDetayPopup));
+            if (state.currentUser) {
+                const sessionRef = doc(db, 'aktifOturumlar', state.currentUser.uid);
+                await deleteDoc(sessionRef).catch(err => console.error("Canlı oturum silinemedi:", err));
+            }
 
-        }
-        
-        async function canliOturumDinleyicisiEkle() {
-            window.addEventListener('beforeunload', async () => {
-                if (state.sinavAktif && state.currentUser) {
-                    const sessionRef = doc(db, 'aktifOturumlar', state.currentUser.uid);
-                    await deleteDoc(sessionRef);
-                }
-            });
-        }
-        
-        async function sinaviSonlandir(kullaniciIstegi) {
-            state.sinavAktif = false;
-            if (unsubscribeOnSnapshot) unsubscribeOnSnapshot();
+            sessionStorage.removeItem('sinavAktif');
+            clearInterval(state.mainTimerInterval);
+            document.querySelectorAll('#sinav-arayuzu button, #sinav-arayuzu input').forEach(el => el.disabled = true);
+           
+            const sonuc = sonuclariHesapla();
+            state.sonSonuc = sonuc.local;
+           
+            await sonucuSunucuyaGonder(sonuc.firebase);
+            sonucuLocaleKaydet(sonuc.local);
+           
+            let mesaj = kullaniciIstegi ? "Sınavınız sonlandırılmıştır.<br>Sonuçlarınız başarıyla kaydedildi." : "Süreniz dolduğu için sınavınız sonlandırılmıştır.<br>Sonuçlarınız başarıyla kaydedildi.";
+            showBilgiPopup(mesaj, () => startResultsCountdown(sonuc.local));
+        }
+       
+        async function sinaviBaslat() {
+            if (state.sinavAktif) return;
+            resetState();
+           
+            if (!sorulariYukle()) return;
 
-            if (state.currentUser) {
-                const sessionRef = doc(db, 'aktifOturumlar', state.currentUser.uid);
-                await deleteDoc(sessionRef).catch(err => console.error("Canlı oturum silinemedi:", err));
-            }
+            ui.sonucArayuzu.classList.add('hidden');
+            ui.sinavArayuzu.classList.remove('hidden');
+            state.sinavAktif = true;
 
-            sessionStorage.removeItem('sinavAktif');
-            clearInterval(state.mainTimerInterval);
-            document.querySelectorAll('#sinav-arayuzu button, #sinav-arayuzu input').forEach(el => el.disabled = true);
-s           
-            const sonuc = sonuclariHesapla();
-            state.sonSonuc = sonuc.local;
-            
-            await sonucuSunucuyaGonder(sonuc.firebase);
-            sonucuLocaleKaydet(sonuc.local);
-            
-            let mesaj = kullaniciIstegi ? "Sınavınız sonlandırılmıştır.<br>Sonuçlarınız başarıyla kaydedildi." : "Süreniz dolduğu için sınavınız sonlandırılmıştır.<br>Sonuçlarınız başarıyla kaydedildi.";
-            showBilgiPopup(mesaj, () => startResultsCountdown(sonuc.local));
-        }
-        
-        async function sinaviBaslat() {
-            if (state.sinavAktif) return;
-            resetState();
-            
-            if (!sorulariYukle()) return;
+            if (state.currentUser) {
+                const { isim, soyisim } = state.currentUser;
+                const sessionRef = doc(db, "aktifOturumlar", state.currentUser.uid);
+               
+                await setDoc(sessionRef, {
+                    isim: isim || 'Bilinmiyor',
+                    soyisim: soyisim || '',
+                    sinavTuru: "Çıkmış Sorular",
+                    baslamaZamani: serverTimestamp()
+                }).catch(err => console.error("Canlı oturum başlatılamadı:", err));
 
-            ui.sonucArayuzu.classList.add('hidden');
-            ui.sinavArayuzu.classList.remove('hidden');
-            state.sinavAktif = true;
+                unsubscribeOnSnapshot = onSnapshot(sessionRef, (doc) => {
+                    if (!doc.exists() && state.sinavAktif) sinaviAdminSonlandirdi();
+                });
+            }
 
-            if (state.currentUser) {
-                const { isim, soyisim } = state.currentUser;
-                const sessionRef = doc(db, "aktifOturumlar", state.currentUser.uid);
-                
-                await setDoc(sessionRef, {
-                    isim: isim || 'Bilinmiyor',
-                    soyisim: soyisim || '',
-                    sinavTuru: "Çıkmış Sorular",
-                    baslamaZamani: serverTimestamp()
-                }).catch(err => console.error("Canlı oturum başlatılamadı:", err));
+            sessionStorage.setItem('sinavAktif', 'true');
+            optikFormuCiz();
+            soruyuEkranaCiz(state.mevcutSoruIndex);
+            startMainExamTimer();
+        }
 
-                unsubscribeOnSnapshot = onSnapshot(sessionRef, (doc) => {
-                    if (!doc.exists() && state.sinavAktif) sinaviAdminSonlandirdi();
-                });
-            }
+        async function sonucuSunucuyaGonder(sonuc) {
+            if (!state.currentUser) return console.error("Kullanıcı girişi yapılmadığı için sonuç kaydedilemedi.");
+            try {
+                const userExamsCollectionRef = collection(db, "kullanicilar", state.currentUser.uid, "sinavlar");
+                await addDoc(userExamsCollectionRef, sonuc);
+                console.log("Sonuç başarıyla Firebase'e kaydedildi.");
+            } catch (e) {
+                console.error("Firebase'e yazılırken hata oluştu: ", e);
+            }
+        }
+       
+        function sonucuLocaleKaydet(sonuc) {
+            if (!state.currentUser) return;
+            let sinavGecmisi = JSON.parse(localStorage.getItem(`sinavGecmisi_${state.currentUser.uid}`)) || [];
+            sinavGecmisi.push(sonuc);
+            localStorage.setItem(`sinavGecmisi_${state.currentUser.uid}`, JSON.stringify(sinavGecmisi));
+        }
 
-            sessionStorage.setItem('sinavAktif', 'true');
-            optikFormuCiz();
-            soruyuEkranaCiz(state.mevcutSoruIndex);
-            startMainExamTimer();
-        }
+        function sinaviAdminSonlandirdi() {
+            if (!state.sinavAktif) return;
+            if (unsubscribeOnSnapshot) unsubscribeOnSnapshot();
+            clearInterval(state.mainTimerInterval);
+            state.sinavAktif = false;
+            document.querySelectorAll('#sinav-arayuzu button, #sinav-arayuzu input').forEach(el => el.disabled = true);
+            showBilgiPopup('Oturumunuz yönetici tarafından sonlandırılmıştır. Ana sayfaya yönlendiriliyorsunuz.', () => {
+                window.location.href = './index.html';
+            });
+        }
 
-        async function sonucuSunucuyaGonder(sonuc) {
-            if (!state.currentUser) return console.error("Kullanıcı girişi yapılmadığı için sonuç kaydedilemedi.");
-            try {
-                const userExamsCollectionRef = collection(db, "kullanicilar", state.currentUser.uid, "sinavlar");
-                await addDoc(userExamsCollectionRef, sonuc);
-                console.log("Sonuç başarıyla Firebase'e kaydedildi.");
-            } catch (e) {
-                console.error("Firebase'e yazılırken hata oluştu: ", e);
-section_ends_here         }
-        
-        function sonucuLocaleKaydet(sonuc) {
-            if (!state.currentUser) return;
-            let sinavGecmisi = JSON.parse(localStorage.getItem(`sinavGecmisi_${state.currentUser.uid}`)) || [];
-            sinavGecmisi.push(sonuc);
-            localStorage.setItem(`sinavGecmisi_${state.currentUser.uid}`, JSON.stringify(sinavGecmisi));
-        }
+        function soruyuEkranaCiz(index) {
+            const soru = state.sorular[index];
+            const ustucizililer = state.ustuCiziliSecenekler[soru.id] || [];
+           
+            let seceneklerHtml = soru.secenekler.map((secenek, i) => {
+                const secenekHarfi = String.fromCharCode(65 + i);
+                const isChecked = state.ogrenciCevaplari[soru.id] === secenekHarfi;
+                const isStriked = ustucizililer.includes(secenekHarfi);
+               
+                const liClasses = `flex items-start gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 transform hover:scale-[1.02] ${isChecked ? 'bg-sky-50 border-sky-500 scale-[1.02] shadow-md' : 'bg-white border-slate-200 hover:border-sky-300'}`;
+                const labelClasses = `flex items-center justify-center w-8 h-8 rounded-full border-2 flex-shrink-0 mt-1 transition ${isChecked ? 'bg-sky-500 border-sky-500 text-white' : 'bg-white border-slate-300'}`;
+                const spanClasses = `flex-grow pt-1 ${isStriked ? 'line-through text-slate-400' : 'text-slate-700'}`;
 
-        function sinaviAdminSonlandirdi() {
-            if (!state.sinavAktif) return;
-            if (unsubscribeOnSnapshot) unsubscribeOnSnapshot();
-            clearInterval(state.mainTimerInterval);
-            state.sinavAktif = false;
-            document.querySelectorAll('#sinav-arayuzu button, #sinav-arayuzu input').forEach(el => el.disabled = true);
-            showBilgiPopup('Oturumunuz yönetici tarafından sonlandırılmıştır. Ana sayfaya yönlendiriliyorsunuz.', () => {
-                window.location.href = './index.html';
-            });
-        }
+                return `<li class="${liClasses}" data-option="${secenekHarfi}">
+                            <label for="secenek-${soru.id}-${secenekHarfi}" class="${labelClasses} no-select">${secenekHarfi}</label>
+                            <span class="${spanClasses}">${secenek}</span>
+                        </li>`;
+            }).join('');
 
-        function soruyuEkranaCiz(index) {
-            // DÜZELTME: Soru dizisi boşsa veya index dışındaysa hata vermemesi için kontrol
-            if (!state.sorular || state.sorular.length === 0) return;
-            const soru = state.sorular[index];
-            if (!soru) return; // Ekstra güvenlik
-            
-            const ustucizililer = state.ustuCiziliSecenekler[soru.id] || [];
-            
-            let seceneklerHtml = soru.secenekler.map((secenek, i) => {
-                const secenekHarfi = String.fromCharCode(65 + i);
-                const isChecked = state.ogrenciCevaplari[soru.id] === secenekHarfi;
-                const isStriked = ustucizililer.includes(secenekHarfi);
-                
-                const liClasses = `flex items-start gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 transform hover:scale-[1.02] ${isChecked ? 'bg-sky-50 border-sky-500 scale-[1.02] shadow-md' : 'bg-white border-slate-200 hover:border-sky-300'}`;
-                const labelClasses = `flex items-center justify-center w-8 h-8 rounded-full border-2 flex-shrink-0 mt-1 transition ${isChecked ? 'bg-sky-500 border-sky-500 text-white' : 'bg-white border-slate-300'}`;
-                const spanClasses = `flex-grow pt-1 ${isStriked ? 'line-through text-slate-400' : 'text-slate-700'}`;
+            ui.soruIcerik.innerHTML = `
+                <div class="mb-4">
+                    <p class="text-xl font-bold text-slate-800">Soru ${soru.id} / ${state.sorular.length}</p>
+                </div>
+                <div class="bg-sky-50 text-sky-800 p-4 rounded-lg mb-6 border-l-4 border-sky-400">
+                    ${soru.talimat || "For these questions, choose the best word or expression to fill the space."}
+                </div>
+                <div class="question-text text-xl text-slate-800 leading-relaxed mb-8">${soru.metin}</div>
+                <ul class="space-y-3">${seceneklerHtml}</ul>`;
 
-                return `<li class="${liClasses}" data-option="${secenekHarfi}">
-                            <label for="secenek-${soru.id}-${secenekHarfi}" class="${labelClasses} no-select">${secenekHarfi}</label>
-                            <span class="${spanClasses}">${secenek}</span>
-                        </li>`;
-            }).join('');
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === state.sorular.length - 1;
+        }
 
-            ui.soruIcerik.innerHTML = `
-                <div class="mb-4">
-                    <p class="text-xl font-bold text-slate-800">Soru ${soru.id} / ${state.sorular.length}</p>
-                </div>
-                <div class="bg-sky-50 text-sky-800 p-4 rounded-lg mb-6 border-l-4 border-sky-400">
-                    ${soru.talimat || "For these questions, choose the best word or expression to fill the space."}
-                </div>
-                <div class="question-text text-xl text-slate-800 leading-relaxed mb-8">${soru.metin}</div>
-                <ul class="space-y-3">${seceneklerHtml}</ul>`;
+        function optikFormuCiz() {
+            ui.optikFormIcerik.innerHTML = state.sorular.map(soru => {
+                const seceneklerHtml = ['A', 'B', 'C', 'D', 'E'].map(secenek => {
+                    const isChecked = state.ogrenciCevaplari[soru.id] === secenek;
+                    // *** DÜZELTME 2: Optik formdaki radio input'una `data-soru-id` eklendi. ***
+                    return `<div>
+                                <input type="radio" id="optik-${soru.id}-${secenek}" name="optik-soru-${soru.id}" value="${secenek}" ${isChecked ? "checked" : ""} class="hidden peer" data-soru-id="${soru.id}">
+                                <label for="optik-${soru.id}-${secenek}" class="w-8 h-8 flex items-center justify-center rounded-full border border-slate-300 cursor-pointer transition peer-checked:bg-slate-800 peer-checked:text-white peer-checked:border-slate-800 hover:border-slate-500">${secenek}</label>
+                            </div>`;
+                }).join('');
 
-            document.getElementById('prev-btn').disabled = index === 0;
-            document.getElementById('next-btn').disabled = index === state.sorular.length - 1;
-        }
+                return `<div class="grid grid-cols-[auto,1fr] items-center gap-3 p-2 rounded-md hover:bg-slate-50" id="optik-soru-${soru.id}">
+                            <span class="font-bold text-slate-600">${soru.id}</span>
+                            <div class="flex justify-around">${seceneklerHtml}</div>
+                        </div>`;
+            }).join('');
+        }
+       
+        function selectAnswer(soruId, secenek) {
+            if (state.isReviewMode) return;
+           
+            state.ogrenciCevaplari[soruId] = secenek;
 
-        function optikFormuCiz() {
-            ui.optikFormIcerik.innerHTML = state.sorular.map(soru => {
-                const seceneklerHtml = ['A', 'B', 'C', 'D', 'E'].map(secenek => {
-                    const isChecked = state.ogrenciCevaplari[soru.id] === secenek;
-                    return `<div>
-                                <input type="radio" id="optik-${soru.id}-${secenek}" name="optik-soru-${soru.id}" value="${secenek}" ${isChecked ? "checked" : ""} class="hidden peer" data-soru-id="${soru.id}">
-                                <label for="optik-${soru.id}-${secenek}" class="w-8 h-8 flex items-center justify-center rounded-full border border-slate-300 cursor-pointer transition peer-checked:bg-slate-800 peer-checked:text-white peer-checked:border-slate-800 hover:border-slate-500">${secenek}</label>
-                            </div>`;
-                }).join('');
+            if (state.sorular[state.mevcutSoruIndex].id === soruId) {
+                soruyuEkranaCiz(state.mevcutSoruIndex);
+            }
 
-                return `<div class="grid grid-cols-[auto,1fr] items-center gap-3 p-2 rounded-md hover:bg-slate-50" id="optik-soru-${soru.id}">
-                            <span class="font-bold text-slate-600">${soru.id}</span>
-                            <div class="flex justify-around">${seceneklerHtml}</div>
-                        </div>`;
-            }).join('');
-        }
-        
-        function selectAnswer(soruId, secenek) {
-            if (state.isReviewMode) return;
-            
-            // Cevabı state'e kaydet
-            state.ogrenciCevaplari[soruId] = secenek;
+            const optikRadios = document.querySelectorAll(`input[name="optik-soru-${soruId}"]`);
+            optikRadios.forEach(radio => radio.checked = (radio.value === secenek));
+        }
 
-            // Sadece mevcut soru ekrandaysa soru panelini güncelle
-            if (state.sorular[state.mevcutSoruIndex].id === soruId) {
-                soruyuEkranaCiz(state.mevcutSoruIndex);
-            }
+        function sorulariYukle() {
+            if (SORU_HAVUZU.length === 0) {
+                alert("Sınav başlatılamıyor: Soru havuzu boş!");
+                document.body.innerHTML = `<div class="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+                    <h1 class="text-2xl font-bold text-red-600">Soru havuzunda hiç soru bulunamadı.</h1>
+                    <a href='./index.html' class="mt-4 bg-sky-500 text-white font-bold py-2 px-4 rounded-lg">Ana Sayfaya Dön</a>
+                </div>`;
+                return false;
+            }
+            const secilecekSoruSayisi = Math.min(SINAVDAKI_SORU_SAYISI, SORU_HAVUZU.length);
+            
+            // *** DÜZELTME 1: Soru karıştırma (.sort) kaldırıldı. ***
+            const secilenSorular = [...SORU_HAVUZU].slice(0, secilecekSoruSayisi);
+           
+            state.sorular = secilenSorular.map((soru, index) => ({ 
+                id: index + 1, 
+                talimat: soru.talimat || "For these questions, choose the best word or expression to fill the space.", 
+                ...soru 
+            }));
+            return true;
+        }
 
-            // Optik formu her zaman güncelle
-            const optikRadios = document.querySelectorAll(`input[name="optik-soru-${soruId}"]`);
-            optikRadios.forEach(radio => radio.checked = (radio.value === secenek));
-        }
+        function sonuclariHesapla() {
+            let dogru = 0, yanlis = 0, bos = 0;
+            
+            let kullaniciAdi = "Bilinmeyen Kullanıcı";
+            if (state.currentUser) {
+                const { isim, soyisim, email } = state.currentUser;
+                kullaniciAdi = (isim && soyisim) ? `${isim} ${soyisim}` : (email || "Bilinmeyen Kullanıcı");
+            }
+           
+            state.sorular.forEach(soru => {
+                const ogrenciCevabi = state.ogrenciCevaplari[soru.id];
+                if (!ogrenciCevabi) bos++;
+                else if (ogrenciCevabi === soru.dogruCevap) dogru++;
+                else yanlis++;
+            });
 
-        function sorulariYukle() {
-            if (SORU_HAVUZU.length === 0) {
-                alert("Sınav başlatılamıyor: Soru havuzu boş!");
-                document.body.innerHTML = `<div class="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-                    <h1 class="text-2xl font-bold text-red-600">Soru havuzunda hiç soru bulunamadı.</h1>
-                    <a href='./index.html' class="mt-4 bg-sky-500 text-white font-bold py-2 px-4 rounded-lg">Ana Sayfaya Dön</a>
-                </div>`;
-                return false;
-            }
-            const secilecekSoruSayisi = Math.min(SINAVDAKI_SORU_SAYISI, SORU_HAVUZU.length);
-            
-            // *** DÜZELTME: Soruların karışmasını sağlayan .sort() komutu kaldırıldı. ***
-            const secilenSorular = [...SORU_HAVUZU].slice(0, secilecekSoruSayisi);
-            
-            state.sorular = secilenSorular.map((soru, index) => ({ 
-                id: index + 1, 
-                talimat: soru.talimat || "For these questions, choose the best word or expression to fill the space.", 
-                ...soru 
-            }));
-            return true;
-        }
+            const net = (dogru - (yanlis / 4)).toFixed(2);
+           
+            const sonucData = {
+                isim: kullaniciAdi, 
+                sinavTuru: "Çıkmış Sorular", 
+                dogruSayisi: dogru, 
+                yanlisSayisi: yanlis, 
+                bosSayisi: bos,
+                netSayisi: net, 
+                toplamSoru: state.sorular.length, 
+                sorular: state.sorular, 
+                ogrenciCevaplari: state.ogrenciCevaplari
+            };
+           
+            return {
+                firebase: { ...sonucData, tarih: serverTimestamp() },
+                local: { ...sonucData, tarih: new Date().toLocaleString('tr-TR') }
+            };
+        }
+       
+        function handleStrikethrough(event) { 
+            if (state.isReviewMode) return; 
+            const listItem = event.target.closest('li'); 
+            if (listItem) { 
+                event.preventDefault(); 
+                const soruId = state.sorular[state.mevcutSoruIndex].id; 
+                const secenek = listItem.dataset.option; 
+                if (!state.ustuCiziliSecenekler[soruId]) state.ustuCiziliSecenekler[soruId] = []; 
+                const index = state.ustuCiziliSecenekler[soruId].indexOf(secenek); 
+                if (index > -1) state.ustuCiziliSecenekler[soruId].splice(index, 1); 
+                else state.ustuCiziliSecenekler[soruId].push(secenek); 
+                listItem.querySelector('span').classList.toggle('line-through'); 
+                listItem.querySelector('span').classList.toggle('text-slate-400'); 
+            } 
+        }
 
-        function sonuclariHesapla() {
-            let dogru = 0, yanlis = 0, bos = 0;
-            
-            // *** DÜZELTME: state.currentUser 'null' ise hata vermemesi için kontrol eklendi. ***
-            let kullaniciAdi = "Bilinmeyen Kullanıcı";
-            if (state.currentUser) {
-                const { isim, soyisim, email } = state.currentUser;
-                kullaniciAdi = (isim && soyisim) ? `${isim} ${soyisim}` : (email || "Bilinmeyen Kullanıcı");
-            }
-            
-            state.sorular.forEach(soru => {
-                const ogrenciCevabi = state.ogrenciCevaplari[soru.id];
-                if (!ogrenciCevabi) bos++;
-                else if (ogrenciCevabi === soru.dogruCevap) dogru++;
-                else yanlis++;
-            });
+        function oncekiSoru() { if (state.mevcutSoruIndex > 0) { state.mevcutSoruIndex--; soruyuEkranaCiz(state.mevcutSoruIndex); } }
+        function sonrakiSoru() { if (state.mevcutSoruIndex < state.sorular.length - 1) { state.mevcutSoruIndex++; soruyuEkranaCiz(state.mevcutSoruIndex); } }
+        function startMainExamTimer() { const timerEl = document.getElementById('main-exam-timer'); let saniye = SINAV_SURESI_DAKIKA * 60; state.mainTimerInterval = setInterval(() => { if (saniye < 0) { clearInterval(state.mainTimerInterval); sinaviSonlandir(false); return; } const saat = Math.floor(saniye / 3600); const dakika = Math.floor((saniye % 3600) / 60); const kalanSaniye = saniye % 60; timerEl.textContent = [saat, dakika, kalanSaniye].map(v => v < 10 ? '0' + v : v).join(':'); saniye--; }, 1000); }
+       
+        function showModal(modalElement) {
+            modalElement.classList.remove('hidden');
+            setTimeout(() => {
+                modalElement.querySelector('.transform').classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
 
-            const net = (dogru - (yanlis / 4)).toFixed(2);
-            
-            const sonucData = {
-                isim: kullaniciAdi, 
-                sinavTuru: "Çıkmış Sorular", 
-                dogruSayisi: dogru, 
-                yanlisSayisi: yanlis, 
-                bosSayisi: bos,
-                netSayisi: net, 
-                toplamSoru: state.sorular.length, 
-                sorular: state.sorular, 
-                ogrenciCevaplari: state.ogrenciCevaplari
-            };
-            
-            return {
-                firebase: { ...sonucData, tarih: serverTimestamp() },
-                local: { ...sonucData, tarih: new Date().toLocaleString('tr-TR') }
-            };
-        }
-        
-        function handleStrikethrough(event) { 
-            if (state.isReviewMode) return; 
-            const listItem = event.target.closest('li'); 
-            if (listItem) { 
-                event.preventDefault(); 
-                const soruId = state.sorular[state.mevcutSoruIndex].id; 
-                const secenek = listItem.dataset.option; 
-                if (!state.ustuCiziliSecenekler[soruId]) state.ustuCiziliSecenekler[soruId] = []; 
-                const index = state.ustuCiziliSecenekler[soruId].indexOf(secenek); 
-                if (index > -1) state.ustuCiziliSecenekler[soruId].splice(index, 1); 
-                else state.ustuCiziliSecenekler[soruId].push(secenek); 
-                listItem.querySelector('span').classList.toggle('line-through'); 
-                listItem.querySelector('span').classList.toggle('text-slate-400');s   
-            } 
-        }
+        function hideModal(modalElement) {
+             modalElement.querySelector('.transform').classList.add('scale-95', 'opacity-0');
+             setTimeout(() => {
+                modalElement.classList.add('hidden');
+            }, 200);
+        }
 
-        function oncekiSoru() { if (state.mevcutSoruIndex > 0) { state.mevcutSoruIndex--; soruyuEkranaCiz(state.mevcutSoruIndex); } }
-        function sonrakiSoru() { if (state.mevcutSoruIndex < state.sorular.length - 1) { state.mevcutSoruIndex++; soruyuEkranaCiz(state.mevcutSoruIndex); } }
-        function startMainExamTimer() { const timerEl = document.getElementById('main-exam-timer'); let saniye = SINAV_SURESI_DAKIKA * 60; state.mainTimerInterval = setInterval(() => { if (saniye < 0) { clearInterval(state.mainTimerInterval); sinaviSonlandir(false); return; } const saat = Math.floor(saniye / 3600); const dakika = Math.floor((saniye % 3600) / 60); const kalanSaniye = saniye % 60; timerEl.textContent = [saat, dakika, kalanSaniye].map(v => v < 10 ? '0' + v : v).join(':'); saniye--; }, 1000); }
-        
-        function showModal(modalElement) {
-            modalElement.classList.remove('hidden');
-            setTimeout(() => {
-                modalElement.querySelector('.transform').classList.remove('scale-95', 'opacity-0');
-            }, 10);
-        }
+        function showBilgiPopup(mesaj, callback) { 
+            const popup = ui.bilgiPopup; 
+            popup.querySelector('#bilgi-mesaji').innerHTML = mesaj; 
+            showModal(popup);
+            const kapatBtn = popup.querySelector('#bilgi-kapat-btn'); 
+            const handler = () => { 
+                hideModal(popup); 
+                if(callback) callback(); 
+            }; 
+            kapatBtn.addEventListener('click', handler, {once: true}); 
+        }
 
-        function hideModal(modalElement) {
-             modalElement.querySelector('.transform').classList.add('scale-95', 'opacity-0');
-             setTimeout(() => {
-                modalElement.classList.add('hidden');
-            }, 200);
-        }
+        function showOnayPopup(mesaj, callback, confirmText = 'Evet') { 
+            const popup = ui.onayPopup; 
+            popup.querySelector('#onay-mesaji').innerHTML = mesaj; 
+            const devamBtn = popup.querySelector('#onay-devam-btn'); 
+            devamBtn.textContent = confirmText; 
+            showModal(popup);
+            const iptalBtn = popup.querySelector('#onay-iptal-btn'); 
+            const devamListener = () => { hideModal(popup); callback(); }; 
+            const iptalListener = () => { hideModal(popup); }; 
+            devamBtn.addEventListener('click', devamListener, { once: true }); 
+            iptalBtn.addEventListener('click', iptalListener, { once: true }); 
+        }
 
-        function showBilgiPopup(mesaj, callback) { 
-            const popup = ui.bilgiPopup; 
-            popup.querySelector('#bilgi-mesaji').innerHTML = mesaj; 
-            showModal(popup);
-            const kapatBtn = popup.querySelector('#bilgi-kapat-btn'); 
-            
-            const handler = () => { 
-                hideModal(popup); 
-                if(callback) callback(); 
-                kapatBtn.removeEventListener('click', handler); // Dinleyiciyi temizle
-            }; 
-            kapatBtn.addEventListener('click', handler, {once: true}); 
-        }
+        function startResultsCountdown(sonuc) { 
+            const popup = ui.sayacPopup; 
+            showModal(popup);
+            let sayac = 5; 
+            const sayacElementi = document.getElementById('gerisayim-sayaci'); 
+            sayacElementi.textContent = sayac; 
+            const interval = setInterval(() => { 
+                sayac--; 
+                sayacElementi.textContent = sayac; 
+                if (sayac <= 0) { 
+                    clearInterval(interval); 
+                    hideModal(popup);
+                    showSonucSayfasi(sonuc); 
+                } 
+            }, 1000); 
+        }
 
-        function showOnayPopup(mesaj, callback, confirmText = 'Evet') { 
-            const popup = ui.onayPopup; 
-            popup.querySelector('#onay-mesaji').innerHTML = mesaj; 
-            const devamBtn = popup.querySelector('#onay-devam-btn'); 
-            devamBtn.textContent = confirmText; 
-            showModal(popup);
-            const iptalBtn = popup.querySelector('#onay-iptal-btn');s  
-            const devamListener = () => { hideModal(popup); if(callback) callback(); cleanup(); }; 
-            const iptalListener = () => { hideModal(popup); cleanup(); }; 
-            const cleanup = () => {
-                devamBtn.removeEventListener('click', devamListener);
-                iptalBtn.removeEventListener('click', iptalListener);
-            };
-            devamBtn.addEventListener('click', devamListener, { once: true }); 
-            iptalBtn.addEventListener('click', iptalListener, { once: true }); 
-        }
+        function showSonucSayfasi(sonuc) {
+            ui.sinavArayuzu.classList.add('hidden');
+            ui.sonucArayuzu.classList.remove('hidden');
 
-        function startResultsCountdown(sonuc) { 
-            const popup = ui.sayacPopup; 
-            showModal(popup);
-            let sayac = 5; 
-            const sayacElementi = document.getElementById('gerisayim-sayaci'); 
-            sayacElementi.textContent = sayac; 
-            const interval = setInterval(() => { 
-                sayac--; 
-                sayacElementi.textContent = sayac; 
-                if (sayac <= 0) { 
-                    clearInterval(interval); 
-                    hideModal(popup);
-                    showSonucSayfasi(sonuc); 
-                } 
-            }, 1000); 
-        }
+            let fullName = "BİLGİ YOK";
+            if (state.currentUser) {
+                const { isim, soyisim, email } = state.currentUser;
+                fullName = (isim && soyisim) ? `${isim.toUpperCase()} ${soyisim.toUpperCase()}` : (email ? email.toUpperCase() : "BİLGİ YOK");
+            }
+            document.getElementById('sonuc-kullanici-ad-soyad').textContent = fullName;
+           
+            document.getElementById('dogru-sayisi').textContent = sonuc.dogruSayisi;
+            document.getElementById('yanlis-sayisi').textContent = sonuc.yanlisSayisi;
+            document.getElementById('bos-sayisi').textContent = sonuc.bosSayisi;
+            document.getElementById('net-sayisi-buyuk').textContent = sonuc.netSayisi;
+           
+            sonucOptikFormuCiz(sonuc);
+        }
 
-        function showSonucSayfasi(sonuc) {
-            ui.sinavArayuzu.classList.add('hidden');
-            ui.sonucArayuzu.classList.remove('hidden');
+        function sinaviIncelemeModundaBaslat(reviewData) { 
+            resetState(); 
+            state.isReviewMode = true; 
+            state.sonSonuc = reviewData; 
+            state.sorular = reviewData.sorular; 
+            state.ogrenciCevaplari = reviewData.ogrenciCevaplari; 
+            ui.sonucArayuzu.classList.add('hidden'); 
+            ui.sinavArayuzu.classList.remove('hidden'); 
+            document.getElementById('main-exam-timer').textContent = "İNCELEME"; 
+            document.getElementById('sinav-sonlandir-btn').classList.add('hidden'); 
+            document.getElementById('sonuclara-don-btn').classList.remove('hidden'); 
+            ui.sinavPdfIndirBtn.disabled = false; 
+            optikFormuCiz(); 
+            soruyuEkranaCiz(state.mevcutSoruIndex); 
+            cevaplariGoster(); 
+        }
 
-            // *** DÜZELTME: state.currentUser 'null' ise hata vermemesi için kontrol eklendi. ***
-            let fullName = "BİLGİ YOK";
-            if (state.currentUser) {
-                const { isim, soyisim, email } = state.currentUser;
-                fullName = (isim && soyisim) ? `${isim.toUpperCase()} ${soyisim.toUpperCase()}` : (email ? email.toUpperCase() : "BİLGİ YOK");
-            }
-            document.getElementById('sonuc-kullanici-ad-soyad').textContent = fullName;
-            
-            document.getElementById('dogru-sayisi').textContent = sonuc.dogruSayisi;
-            document.getElementById('yanlis-sayisi').textContent = sonuc.yanlisSayisi;
-            document.getElementById('bos-sayisi').textContent = sonuc.bosSayisi;
-            document.getElementById('net-sayisi-buyuk').textContent = sonuc.netSayisi;
-            
-            sonucOptikFormuCiz(sonuc);
-        }
+        function cevaplariGoster() { 
+            state.sorular.forEach(soru => { 
+                const ogrenciCevabi = state.ogrenciCevaplari[soru.id]; 
+                const dogruCevap = soru.dogruCevap; 
+                const dogruLabel = document.querySelector(`#optik-soru-${soru.id} label[for='optik-${soru.id}-${dogruCevap}']`); 
+                if (dogruLabel) dogruLabel.classList.add('!bg-green-500', '!border-green-500', '!text-white'); 
+                if (ogrenciCevabi && ogrenciCevabi !== dogruCevap) { 
+                    const yanlisLabel = document.querySelector(`#optik-soru-${soru.id} label[for='optik-${soru.id}-${ogrenciCevabi}']`); 
+                    if (yanlisLabel) yanlisLabel.classList.add('!bg-red-500', '!border-red-500', '!text-white'); 
+                } 
+            }); 
+        }
 
-        function sinaviIncelemeModundaBaslat(reviewData) { 
-            resetState(); 
-            state.isReviewMode = true; 
-            state.sonSonuc = reviewData; 
-            state.sorular = reviewData.sorular; 
-            state.ogrenciCevaplari = reviewData.ogrenciCevaplari; 
-            ui.sonucArayuzu.classList.add('hidden'); 
-            ui.sinavArayuzu.classList.remove('hidden'); 
-            document.getElementById('main-exam-timer').textContent = "İNCELEME"; 
-            document.getElementById('main-exam-timer').classList.remove('text-red-600');
-            document.getElementById('main-exam-timer').classList.add('text-sky-600');
-            document.getElementById('sinav-sonlandir-btn').classList.add('hidden'); 
-            document.getElementById('sonuclara-don-btn').classList.remove('hidden'); 
-            ui.sinavPdfIndirBtn.disabled = false; 
-            optikFormuCiz(); 
-            soruyuEkranaCiz(state.mevcutSoruIndex); 
-            cevaplariGoster(); 
-        }
+        function sonucOptikFormuCiz(sonuc) { 
+            const container = document.getElementById('optik-form-sonuc'); 
+            container.innerHTML = sonuc.sorular.map(soru => { 
+                const ogrenciCevabi = sonuc.ogrenciCevaplari[soru.id]; 
+                const dogruCevap = soru.dogruCevap; 
+                let durumText = '', durumClass = ''; 
+                if (!ogrenciCevabi) { 
+                    durumText = 'BOŞ'; 
+                    durumClass = 'bg-slate-500'; 
+                } else if (ogrenciCevabi === dogruCevap) { 
+                    durumText = 'DOĞRU'; 
+                    durumClass = 'bg-green-500'; 
+                } else { 
+                    durumText = 'YANLIŞ'; 
+                    durumClass = 'bg-red-500'; 
+                } 
+                return `<div class="p-3 bg-slate-50 rounded-lg flex items-center gap-4 cursor-pointer hover:bg-slate-100 transition-colors" data-soru-id="${soru.id}">
+                            <div class="font-bold text-slate-700 w-16">${soru.id}. Soru</div>
+                            <div class="flex-grow flex justify-start gap-2">
+                                ${['A', 'B', 'C', 'D', 'E'].map(secenek => {
+                                    let siniflar = 'w-9 h-9 flex items-center justify-center rounded-full font-semibold border-2 relative';
+                                    if (secenek === dogruCevap) {
+                                        siniflar += ' bg-green-100 border-green-500 text-green-700';
+                                    } else if (secenek === ogrenciCevabi) {
+                                        siniflar += ' bg-red-100 border-red-500 text-red-700';
+                                    } else {
+                                        siniflar += ' bg-white border-slate-200 text-slate-600';
+                                    }
+                                    if(secenek === ogrenciCevabi && ogrenciCevabi === dogruCevap){
+                                         siniflar += ' ring-2 ring-offset-2 ring-sky-500';
+                                    }
+                                    return `<div class="${siniflar}">${secenek}</div>`;
+                                }).join('')}
+                            </div>
+                            <div class="text-white text-xs font-bold px-3 py-1 rounded-full ${durumClass}">${durumText}</div>
+                        </div>`; 
+            }).join(''); 
+        }
 
-        function cevaplariGoster() { 
-            state.sorular.forEach(soru => { 
-                const ogrenciCevabi = state.ogrenciCevaplari[soru.id]; 
-                const dogruCevap = soru.dogruCevap; 
-                const dogruLabel = document.querySelector(`#optik-soru-${soru.id} label[for='optik-${soru.id}-${dogruCevap}']`); 
-                if (dogruLabel) dogruLabel.classList.add('!bg-green-500', '!border-green-500', '!text-white'); 
-                if (ogrenciCevabi && ogrenciCevabi !== dogruCevap) { 
-                    const yanlisLabel = document.querySelector(`#optik-soru-${soru.id} label[for='optik-${soru.id}-${ogrenciCevabi}']`); 
-                    if (yanlisLabel) yanlisLabel.classList.add('!bg-red-500', '!border-red-500', '!text-white'); 
-                } 
-            }); 
-        }
+        function showSoruDetayPopup(soruId) { 
+            const popup = ui.soruDetayPopup; 
+            const soru = state.sonSonuc.sorular.find(s => s.id === soruId); 
+            const ogrenciCevabi = state.sonSonuc.ogrenciCevaplari[soruId]; 
+            const dogruCevap = soru.dogruCevap; 
+            document.getElementById('soru-detay-baslik').textContent = `Soru ${soru.id} Detayı`; 
+            document.getElementById('soru-detay-metin').innerHTML = soru.metin; 
+            const seceneklerContainer = document.getElementById('soru-detay-secenekler'); 
+            seceneklerContainer.innerHTML = soru.secenekler.map((secenekMetni, index) => { 
+                const secenekHarfi = String.fromCharCode(65 + index); 
+                let rowClass = 'flex justify-between items-center p-4 rounded-lg border-2'; 
+                let iconHtml = '<span></span>'; 
+                const isCorrect = (secenekHarfi === dogruCevap); 
+                const isStudentAnswer = (secenekHarfi === ogrenciCevabi); 
+                if (isCorrect) { 
+                    rowClass += ' bg-green-50 border-green-500'; 
+                    iconHtml = '<span class="text-green-600 font-bold text-xl">✓</span>'; 
+                } else if (isStudentAnswer && !isCorrect) { 
+                    rowClass += ' bg-red-50 border-red-500'; 
+                    iconHtml = '<span class="text-red-600 font-bold text-xl">✗</span>'; 
+                } else { 
+                    rowClass += ' border-slate-200';
+                } 
+                return `<li class="${rowClass}"><div><span class="font-bold text-slate-800 mr-2">${secenekHarfi})</span><span class="text-slate-700">${secenekMetni}</span></div>${iconHtml}</li>`; 
+            }).join(''); 
+            showModal(popup);
+        }
 
-        function sonucOptikFormuCiz(sonuc) { 
-            const container = document.getElementById('optik-form-sonuc'); 
-            container.innerHTML = sonuc.sorular.map(soru => { 
-                const ogrenciCevabi = sonuc.ogrenciCevaplari[soru.id]; 
-                const dogruCevap = soru.dogruCevap; 
-                let durumText = '', durumClass = ''; 
-                if (!ogrenciCevabi) {
-                    durumText = 'BOŞ'; 
-                    durumClass = 'bg-slate-500'; 
-                } else if (ogrenciCevabi === dogruCevap) { 
-                    durumText = 'DOĞRU'; 
-                    durumClass = 'bg-green-500';s  
-                } else { 
-                    durumText = 'YANLIŞ'; 
-                    durumClass = 'bg-red-500'; 
-                } 
-                return `<div class="p-3 bg-slate-50 rounded-lg flex items-center gap-4 cursor-pointer hover:bg-slate-100 transition-colors" data-soru-id="${soru.id}">
-                        <div class="font-bold text-slate-700 w-16">${soru.id}. Soru</div>
-                        <div class="flex-grow flex justify-start gap-2">
-                            ${['A', 'B', 'C', 'D', 'E'].map(secenek => {
-                                let siniflar = 'w-9 h-9 flex items-center justify-center rounded-full font-semibold border-2 relative';
-                                if (secenek === dogruCevap) {
-                                    siniflar += ' bg-green-100 border-green-500 text-green-700';
-                                } else if (secenek === ogrenciCevabi) {
-                                    siniflar += ' bg-red-100 border-red-500 text-red-700';
-section_ends_here                         } else {
-                                    siniflar += ' bg-white border-slate-200 text-slate-600';
-                                }
-                                if(secenek === ogrenciCevabi && ogrenciCevabi === dogruCevap){
-                                     siniflar += ' ring-2 ring-offset-2 ring-sky-500';
-                                }
-                                return `<div class="${siniflar}">${secenek}</div>`;
-                            }).join('')}
-                        </div>
-                        <div class="text-white text-xs font-bold px-3 py-1 rounded-full ${durumClass}">${durumText}</div>
-                    </div>`; 
-            }).join(''); 
-        }
-
-        function showSoruDetayPopup(soruId) { 
-            const popup = ui.soruDetayPopup; 
-            const soru = state.sonSonuc.sorular.find(s => s.id === soruId);s  
-            const ogrenciCevabi = state.sonSonuc.ogrenciCevaplari[soruId]; 
-            const dogruCevap = soru.dogruCevap; 
-            document.getElementById('soru-detay-baslik').textContent = `Soru ${soru.id} Detayı`; 
-            document.getElementById('soru-detay-metin').innerHTML = soru.metin; 
-            const seceneklerContainer = document.getElementById('soru-detay-secenekler'); 
-            seceneklerContainer.innerHTML = soru.secenekler.map((secenekMetni, index) => { 
-                const secenekHarfi = String.fromCharCode(65 + index); 
-                let rowClass = 'flex justify-between items-center p-4 rounded-lg border-2'; 
-                let iconHtml = '<span></span>'; 
-                const isCorrect = (secenekHarfi === dogruCevap); 
-                const isStudentAnswer = (secenekHarfi === ogrenciCevabi); 
-                if (isCorrect) { 
-                    rowClass += ' bg-green-50 border-green-500';s  
-                    iconHtml = '<span class="text-green-600 font-bold text-xl">✓</span>'; 
-                } else if (isStudentAnswer && !isCorrect) { 
-                    rowClass += ' bg-red-50 border-red-500'; 
-                    iconHtml = '<span class="text-red-600 font-bold text-xl">✗</span>'; 
-                } else { 
-                    rowClass += ' border-slate-200';
-                } 
-                return `<li class="${rowClass}"><div><span class="font-bold text-slate-800 mr-2">${secenekHarfi})</span><span class="text-slate-700">${secenekMetni}</span></div>${iconHtml}</li>`;s  
-            }).join(''); 
-            showModal(popup);
-        }
-
-        function sorulariPDFIndir(forceDownload = false) {
-            const canDownload = state.sinavAktif || forceDownload || state.isReviewMode;
-            if (!canDownload || !state.sorular || state.sorular.length === 0) {
-                alert("Yazdırmak için geçerli bir sınav verisi bulunmalıdır.");
-                return;
-            }
-            
-            let ogrenciAdi = "Bilinmeyen Kullanıcı";
-            if (state.currentUser) {
-                const { isim, soyisim, email } = state.currentUser;
-                ogrenciAdi = (isim && soyisim) ? `${isim} ${soyisim}` : (email || "Bilinmeyen Kullanıcı");
-            }
-            
-            const sinavBasligi = `Çıkmış Sorular Sınav Kitapçığı`;
-            const tarih = new Date().toLocaleDateString('tr-TR');
-            const printStyles = `<style>@page{size:A4;margin:20mm 15mm}body{font-family:'Carlito',Calibri,sans-serif;color:#333}.main-header{text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:15px;page-break-after:avoid}.main-header h1{font-size:22px;margin:0 0 5px 0;color:#111;font-weight:700}.main-header p{font-size:12px;margin:0;color:#555}.content{column-count:2;column-gap:15mm;column-rule:1px solid #ccc}.question-block{page-break-inside:avoid;-webkit-column-break-inside:avoid;break-inside:avoid;margin-bottom:14px}.question-title{font-size:11.5px;font-weight:700;color:#000;line-height:1.5;margin-bottom:8px}.options-list{padding-left:5px;font-size:11px;line-height:1.5}.option-item{margin-bottom:5px}.option-item strong{font-weight:700}.page-footer{position:fixed;bottom:10mm;left:15mm;right:15mm;text-align:center;font-size:10px;color:#888}.page-number::after{content:counter(page)}</style>`;
-            let headerHTML = `<div class="main-header"><h1>${sinavBasligi}</h1><p>Öğrenci: ${ogrenciAdi} &nbsp;&nbsp;|&nbsp;&nbsp; Tarih: ${tarih}</p></div>`;
-            let contentHTML = '<div class="content">';
-            state.sorular.forEach((soru, index) => {
-                const soruMetni = soru.metin.replace(/<[^>]*>?/gm, '');
-                contentHTML += `<div class="question-block"><div class="question-title">${index + 1}. ${soruMetni}</div><div class="options-list">`;
-                soru.secenekler.forEach((secenek, i) => {
-                    const harf = String.fromCharCode(65 + i);
-                    const secenekMetni = secenek.replace(/<[^>]*>?/gm, '');
-                    contentHTML += `<div class="option-item"><strong>${harf})</strong> ${secenekMetni}</div>`;
-                });
-                contentHTML += `</div></div>`;
-            });
-            contentHTML += `</div>`;
-            let footerHTML = `<div class="page-footer"><span class="page-number"></span></div>`;
-            const printWindow = window.open('', '', 'height=800,width=800');
-            printWindow.document.write(`<html><head><title>${sinavBasligi} - ${ogrenciAdi}</title>${printStyles}</head><body>${headerHTML}${contentHTML}${footerHTML}</body></html>`);
-            printWindow.document.close();
-            setTimeout(() => { printWindow.focus(); printWindow.print(); printWindow.close(); }, 500);
-        }
-    </script>
+        function sorulariPDFIndir(forceDownload = false) {
+            const canDownload = state.sinavAktif || forceDownload || state.isReviewMode;
+            if (!canDownload || !state.sorular || state.sorular.length === 0) {
+                alert("Yazdırmak için geçerli bir sınav verisi bulunmalıdır.");
+                return;
+            }
+            
+            let ogrenciAdi = "Bilinmeyen Kullanıcı";
+            if (state.currentUser) {
+                const { isim, soyisim, email } = state.currentUser;
+                ogrenciAdi = (isim && soyisim) ? `${isim} ${soyisim}` : (email || "Bilinmeyen Kullanıcı");
+            }
+           
+            const sinavBasligi = `Çıkmış Sorular Sınav Kitapçığı`;
+            const tarih = new Date().toLocaleDateString('tr-TR');
+            const printStyles = `<style>@page{size:A4;margin:20mm 15mm}body{font-family:'Carlito',Calibri,sans-serif;color:#333}.main-header{text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:15px;page-break-after:avoid}.main-header h1{font-size:22px;margin:0 0 5px 0;color:#111;font-weight:700}.main-header p{font-size:12px;margin:0;color:#555}.content{column-count:2;column-gap:15mm;column-rule:1px solid #ccc}.question-block{page-break-inside:avoid;-webkit-column-break-inside:avoid;break-inside:avoid;margin-bottom:14px}.question-title{font-size:11.5px;font-weight:700;color:#000;line-height:1.5;margin-bottom:8px}.options-list{padding-left:5px;font-size:11px;line-height:1.5}.option-item{margin-bottom:5px}.option-item strong{font-weight:700}.page-footer{position:fixed;bottom:10mm;left:15mm;right:15mm;text-align:center;font-size:10px;color:#888}.page-number::after{content:counter(page)}</style>`;
+            let headerHTML = `<div class="main-header"><h1>${sinavBasligi}</h1><p>Öğrenci: ${ogrenciAdi} &nbsp;&nbsp;|&nbsp;&nbsp; Tarih: ${tarih}</p></div>`;
+            let contentHTML = '<div class="content">';
+            state.sorular.forEach((soru, index) => {
+                const soruMetni = soru.metin.replace(/<[^>]*>?/gm, '');
+                contentHTML += `<div class="question-block"><div class="question-title">${index + 1}. ${soruMetni}</div><div class="options-list">`;
+                soru.secenekler.forEach((secenek, i) => {
+                    const harf = String.fromCharCode(65 + i);
+                    const secenekMetni = secenek.replace(/<[^>]*>?/gm, '');
+                    contentHTML += `<div class="option-item"><strong>${harf})</strong> ${secenekMetni}</div>`;
+                });
+                contentHTML += `</div></div>`;
+            });
+            contentHTML += `</div>`;
+            let footerHTML = `<div class="page-footer"><span class="page-number"></span></div>`;
+            const printWindow = window.open('', '', 'height=800,width=800');
+            printWindow.document.write(`<html><head><title>${sinavBasligi} - ${ogrenciAdi}</title>${printStyles}</head><body>${headerHTML}${contentHTML}${footerHTML}</body></html>`);
+            printWindow.document.close();
+            setTimeout(() => { printWindow.focus(); printWindow.print(); printWindow.close(); }, 500);
+        }
+    </script>
 </body>
 </html>
